@@ -8,9 +8,7 @@ vim.opt.expandtab = true
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-if vim.g.vscode == nil then
-    vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-end
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then

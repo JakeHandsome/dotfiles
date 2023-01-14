@@ -1,6 +1,7 @@
 return {
    "tpope/vim-fugitive",
-   config = function() 
+   cmd = "Git",
+   init = function() 
       require("which-key").register({
          ["<leader>"] = {
             g = {

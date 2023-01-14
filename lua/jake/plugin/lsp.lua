@@ -19,6 +19,7 @@ return {
             { 'L3MON4D3/LuaSnip' },
             { 'rafamadriz/friendly-snippets' },
         },
+        event = "BufReadPre",
         config = function()
             local lsp = require('lsp-zero')
             lsp.preset('recommended')
@@ -51,7 +52,6 @@ return {
             })
 
             lsp.on_attach(function(client, bufnr)
-                local opts = { buffer = bufnr, remap = false }
                 local wk = require("which-key")
 
                 wk.register({
@@ -82,22 +82,21 @@ return {
 
             lsp.setup()
 
+            -- Setup lsp inlay hints same as vscode
+            require("lsp-inlayhints").setup()
+            vim.cmd [[hi LspInlayHint guifg=#d8d8d8 guibg=#3a3a3a]]
+
             vim.diagnostic.config({
                 virtual_text = true,
             })
 
         end,
-        cond = vim.g.vscode == nil
+        cond = vim.g.vscode == nil,
     },
     {
         'lvimuser/lsp-inlayhints.nvim',
-        config = function()
-            -- Setup lsp inlay hints same as vscode
-            require("lsp-inlayhints").setup()
-            vim.cmd [[hi LspInlayHint guifg=#d8d8d8 guibg=#3a3a3a]]
-
-        end,
-        cond = vim.g.vscode == nil
+        cond = vim.g.vscode == nil,
+        lazy = true,
     }
 
 }

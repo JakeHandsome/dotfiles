@@ -1,6 +1,8 @@
 return {
     'Mofiqul/vscode.nvim',
     name = 'vscode-style',
+    lazy = false, -- cannot lazy load main colorscheme
+    priority = 1000, -- Load before all other plugins
     config = function()
         -- Lua:
         -- For dark theme (neovim's default)

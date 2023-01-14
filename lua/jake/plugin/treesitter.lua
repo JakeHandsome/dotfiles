@@ -23,5 +23,6 @@ return {
             },
         }
     end,
-    cond = vim.g.vscode == nil
+    cond = vim.g.vscode == nil,
+    event = "BufReadPost",
 }
