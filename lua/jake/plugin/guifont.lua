@@ -3,8 +3,8 @@ return {
     init = function()
         if vim.g.neovide then
             require("which-key").register({
-                ["<C-]>"] = { "<Cmd>GUIFontSizeUp<CR>", "Font size up" },
-                ["<C-[>"] = { "<Cmd>GUIFontSizeDown<CR>", "Font size down" }
+                ["<C-F12>"] = { "<Cmd>GUIFontSizeUp<CR>", "Font size up" },
+                ["<C-F11>"] = { "<Cmd>GUIFontSizeDown<CR>", "Font size down" }
             }
             )
         end
