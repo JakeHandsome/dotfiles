@@ -86,7 +86,8 @@ return {
                 virtual_text = true,
             })
 
-        end
+        end,
+        cond = vim.g.vscode == nil
     },
     {
         'lvimuser/lsp-inlayhints.nvim',
@@ -95,7 +96,8 @@ return {
             require("lsp-inlayhints").setup()
             vim.cmd [[hi LspInlayHint guifg=#d8d8d8 guibg=#3a3a3a]]
 
-        end
+        end,
+        cond = vim.g.vscode == nil
     }
 
 }

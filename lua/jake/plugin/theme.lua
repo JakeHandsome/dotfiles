@@ -26,6 +26,6 @@ return {
                 Cursor = { fg = c.vscDarkBlue, bg = c.vscLightGreen, bold = true },
             }
         })
-
-    end
+    end,
+    cond = vim.g.vscode == nil
 }
