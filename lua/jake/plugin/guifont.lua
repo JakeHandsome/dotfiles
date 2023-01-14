@@ -9,8 +9,6 @@ return {
             )
         end
     end,
-    config = function()
-        require("gui-font-resize").setup()
-    end,
+    config = true,
     cmd = {"GUIFontSizeDown","GUIFontSizeUp"}
 }

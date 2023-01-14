@@ -12,8 +12,6 @@ return{
             }
          })
    end,
-   config = function()
-      require("toggleterm").setup()
-   end,
+   config = true,
    cond = vim.g.vscode == nil,
 }
