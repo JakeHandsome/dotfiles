@@ -6,7 +6,8 @@ return {
             ["<leader>"] = {
                 g = {
                     name = "Git",
-                    s = { vim.cmd.Git, "Status" },
+                    s = { "<Cmd>tab Git<CR>", "Status" },
+                    c = { "<Cmd>tab Git commit<CR>", "commit" },
                    ["dt"] = { "<Cmd>Git difftool -d<CR>", "Difftool" }
                 },
             }

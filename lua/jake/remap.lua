@@ -23,6 +23,10 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], {desc = "Yank line to system keyboard"
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("i", "kj", "<Esc>")
 
+vim.keymap.set("t", "jk", "<C-\\><C-n>")
+vim.keymap.set("t", "kj", "<C-\\><C-n>")
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", {desc = "Move highlighted line"})
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", {desc = "Move highlighted line"})
 

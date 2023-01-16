@@ -1,7 +1,10 @@
 return {
     'nvim-telescope/telescope.nvim',
     version = '0.1.0',
-    dependencies = { { 'nvim-lua/plenary.nvim' } },
+    dependencies = {
+        { 'nvim-lua/plenary.nvim' },
+    },
+    cmd = "Telescope",
     -- Load key binds during init
     init = function()
         require("which-key").register({
@@ -17,7 +20,7 @@ return {
                 },
                 p = { "<Cmd>Telescope projects<CR>", "Projects" },
                 r = { "<Cmd>Telescope resume<CR>", "Resume" },
-                t = {"<Cmd>Telescope<CR>","Telescope"},
+                t = { "<Cmd>Telescope<CR>", "Telescope" },
             }
         }
         )
@@ -28,9 +31,7 @@ return {
             -- your configuration comes here
             -- or leave it empty to use the default settings
             -- refer to the configuration section below
-            silent_chdr = false,
-            require('telescope').load_extension('projects')
         }
+        require('telescope').load_extension('projects')
     end,
-    cmd = "Telescope"
 }
