@@ -1,4 +1,4 @@
-vim.opt.nu = true
+vim.opt.number = true
 vim.opt.signcolumn = 'yes'
 
 vim.opt.tabstop = 4

@@ -1,14 +1,6 @@
 local wk = require("which-key")
 
 -- Register leader mappings with description
--- Normal mode registrations
-wk.register({
-    p = {
-        name = "project",
-        v = { "<cmd>Ex<cr>", "View" },
-    },
-}, { prefix = "<leader>" })
-
 -- X mode
 wk.register({
     p = { [["_dP]], "Send selection to blackhole and paste line" }
@@ -23,6 +15,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], {desc = "Yank line to system keyboard"
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("i", "kj", "<Esc>")
 
+-- Exit terminal mode
 vim.keymap.set("t", "jk", "<C-\\><C-n>")
 vim.keymap.set("t", "kj", "<C-\\><C-n>")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
