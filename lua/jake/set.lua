@@ -34,6 +34,9 @@ vim.opt.colorcolumn = "120"
 if vim.g.neovide then
     vim.opt.guifont = "Iosevka:h11"
 end
-
 -- global status line
 vim.opt.laststatus = 3
+
+vim.opt.list = true
+
+vim.opt.listchars="tab:-->,space:·,eol:¬"
