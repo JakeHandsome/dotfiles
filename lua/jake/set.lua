@@ -1,5 +1,6 @@
 vim.opt.number = true
 vim.opt.signcolumn = 'yes'
+vim.opt.relativenumber = true
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -19,6 +20,7 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then
+    vim.cmd([[colorscheme codedark]])
     vim.opt.termguicolors = true
 end
 
@@ -30,7 +32,7 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
 
 if vim.g.neovide then
-    vim.opt.guifont = "Iosevka:h12"
+    vim.opt.guifont = "Iosevka:h11"
 end
 
 -- global status line
