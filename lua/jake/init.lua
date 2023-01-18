@@ -1,5 +1,2 @@
--- set leader before loading lazy
-vim.g.mapleader = " "
+-- Load plugins with lazy
 require("jake.lazy")
-require("jake.remap")
-require("jake.set")

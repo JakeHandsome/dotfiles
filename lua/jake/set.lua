@@ -20,7 +20,6 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then
-    vim.cmd([[colorscheme codedark]])
     vim.opt.termguicolors = true
 end
 
@@ -39,4 +38,4 @@ vim.opt.laststatus = 3
 
 vim.opt.list = true
 
-vim.opt.listchars="tab:-->,space:·,eol:¬"
+vim.opt.listchars = "tab:-->,space:·,eol:¬"

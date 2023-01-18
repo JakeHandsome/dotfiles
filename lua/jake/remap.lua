@@ -1,12 +1,5 @@
-local wk = require("which-key")
-
--- Register leader mappings with description
--- X mode
-wk.register({
-    p = { [["_dP]], "Send selection to blackhole and paste line" }
-}, { prefix = "<leader>", mode = "x", })
-
 -- next greatest remap ever : asbjornHaland
+vim.keymap.set("n", "<leader>p",[["_dP]], {desc = "Send selection to blackhole and paste line"})
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system keyboard" })
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to blackhole" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system keyboard" })

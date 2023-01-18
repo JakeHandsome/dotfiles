@@ -97,6 +97,12 @@ return {
         'lvimuser/lsp-inlayhints.nvim',
         cond = vim.g.vscode == nil,
         lazy = true,
+    },
+    -- nvim lightbulb
+    {
+        'kosayoda/nvim-lightbulb',
+        opts = { autocmd = { enabled = true } },
+        dependencies = 'antoinemadec/FixCursorHold.nvim',
+        event = "BufReadPre",
     }
-
 }
