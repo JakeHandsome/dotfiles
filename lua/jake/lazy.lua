@@ -13,8 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local opts = {}
 
-if vim.g.vscode ~= nil then
-    opts.install = { colorscheme  = {"codedark"}}
+if vim.g.vscode == nil then
+    opts.install = { colorscheme = { "codedark" } }
 end
-
-require("lazy").setup("jake.plugin",opts)
+require("lazy").setup("jake.plugin", opts)
