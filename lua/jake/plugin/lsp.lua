@@ -104,5 +104,6 @@ return {
         opts = { autocmd = { enabled = true } },
         dependencies = 'antoinemadec/FixCursorHold.nvim',
         event = "BufReadPre",
+        cond = vim.g.vscode == nil,
     }
 }

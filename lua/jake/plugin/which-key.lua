@@ -9,6 +9,7 @@ return {
             mode = { "n", "v" },
             ["<leader>f"] = { name = "+find" },
             ["<leader>g"] = { name = "+git" },
+            ["<leader>gh"] = { name = "+gitsigns"},
         })
     end,
     lazy = true
