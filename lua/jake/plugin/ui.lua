@@ -3,6 +3,7 @@ return {
     -- Popup notifications
     {
         "rcarriga/nvim-notify",
+        event = "VeryLazy",
         keys = {
             {
                 "<leader>un",
@@ -46,7 +47,7 @@ return {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         opts = function(_)
-            -- TODO define icons sometime local icons = require("lazyvim.config").icons
+            local icons = require("jake.icons")
 
             local function fg(name)
                 return function()
@@ -69,11 +70,10 @@ return {
                         {
                             "diagnostics",
                             symbols = {
-                                -- TODO icons
-                                -- error = icons.diagnostics.Error,
-                                -- warn = icons.diagnostics.Warn,
-                                -- info = icons.diagnostics.Info,
-                                -- hint = icons.diagnostics.Hint,
+                                error = icons.diagnostics.Error,
+                                warn = icons.diagnostics.Warn,
+                                info = icons.diagnostics.Info,
+                                hint = icons.diagnostics.Hint,
                             },
                         },
                         { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
@@ -106,10 +106,9 @@ return {
                         {
                             "diff",
                             symbols = {
-                                -- TODO icons
-                                -- added = icons.git.added,
-                                -- modified = icons.git.modified,
-                                -- removed = icons.git.removed,
+                                added = icons.git.added,
+                                modified = icons.git.modified,
+                                removed = icons.git.removed,
                             },
                         },
                     },

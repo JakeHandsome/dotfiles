@@ -8,6 +8,10 @@ return {
         opts = { delay = 200 },
         config = function(_, opts)
             require("illuminate").configure(opts)
+            local bg_color = require("monokai").classic.base5
+            vim.cmd(string.format([[hi IlluminatedWordText gui=NONE guibg=%s]], bg_color))
+            vim.cmd(string.format([[hi IlluminatedWordRead gui=NONE guibg=%s]], bg_color))
+            vim.cmd(string.format([[hi IlluminatedWordWrite gui=%s guibg=%s]], "underline", bg_color))
         end,
         -- stylua: ignore
         keys = {
