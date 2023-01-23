@@ -137,7 +137,7 @@ return {
         },
     },
     {
-        "ahmedkhalf/project.nvim",
+            "ahmedkhalf/project.nvim",
         event = "VeryLazy",
         config = function()
             -- Add project dependency

@@ -1,1 +1,1 @@
-require("jake")
+require("config.lazy")
