@@ -1,5 +1,5 @@
--- Plugins that need to be disabled in vscode
 return {
+   -- Plugins that need to be disabled in vscode
    { "NvChad/nvim-colorizer.lua", cond = vim.g.vscode == nil, },
    { "RRethy/vim-illuminate", cond = vim.g.vscode == nil, },
    { "lewis6991/gitsigns.nvim", cond = vim.g.vscode == nil, },
@@ -19,4 +19,6 @@ return {
    { "nvim-treesitter/nvim-treesitter", cond = vim.g.vscode == nil, },
    -- Also disable in neovide
    { "folke/noice.nvim", cond = vim.g.vscode == nil and vim.g.neovide == nil, },
+   { "ggandor/leap.nvim", cond = false },
+   { "akinsho/nvim-bufferline.lua", cond = false }
 }
