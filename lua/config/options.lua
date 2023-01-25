@@ -2,7 +2,7 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 vim.opt.number = true
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 vim.opt.relativenumber = true
 
 vim.opt.tabstop = 4
@@ -33,9 +33,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
 
-if vim.g.neovide then
-	vim.opt.guifont = "Iosevka:h11"
-end
+vim.opt.guifont = "Iosevka:h11"
 -- global status line
 vim.opt.laststatus = 3
 
