@@ -14,16 +14,16 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 
 if vim.loop.os_uname().sysname == "Windows_NT" then
-	vim.opt.undodir = os.getenv("UserProfile") .. "/.vim/undodir"
+    vim.opt.undodir = os.getenv("UserProfile") .. "/.vim/undodir"
 else
-	vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+    vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 end
 vim.opt.undofile = true
 
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then
-	vim.opt.termguicolors = true
+    vim.opt.termguicolors = true
 end
 
 vim.opt.scrolloff = 8
@@ -40,3 +40,11 @@ vim.opt.laststatus = 3
 vim.opt.list = true
 
 vim.opt.listchars = "tab:-->,space:·,eol:¬"
+
+if vim.g.neovide ~= nil then
+    vim.g.neovide_hide_mouse_when_typing = true
+    vim.g.neovide_cursor_vfx_mode = "pixiedust"
+    -- No transparency
+    vim.g.neovide_transparency = 1
+    vim.g.neovide_scroll_animation_length = 0.13 -- in seconds
+end
