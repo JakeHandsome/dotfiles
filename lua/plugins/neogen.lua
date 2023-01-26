@@ -1,7 +1,7 @@
 return {
    "danymat/neogen",
    keys = {
-      { "<leader>cc", "<cmd>Neogen<cr>", desc = "Generate documentation" }
+      { "<leader>cc", "<cmd>Neogen<cr>", desc = "Generate documentation" },
    },
    dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
@@ -12,7 +12,7 @@ return {
       snippet_engine = "luasnip",
       enabled = true,
       input_after_comment = true,
-   }
+   },
    -- Uncomment next line if you want to follow only stable versions
    -- version = "*"
 }

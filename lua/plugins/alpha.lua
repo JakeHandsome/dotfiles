@@ -30,5 +30,5 @@ return {
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.opts.layout[1].val = 8
       return dashboard
-   end
+   end,
 }
