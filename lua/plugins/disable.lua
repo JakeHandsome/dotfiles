@@ -22,4 +22,6 @@ return {
    -- ALways disable
    { "ggandor/leap.nvim", cond = false },
    { "akinsho/bufferline.nvim", cond = false },
+   -- Use different session manager
+   { "folke/persistence.nvim", cond = false, keys = function() return {} end },
 }
