@@ -1,3 +1,31 @@
+local handler = function(virtText, lnum, endLnum, width, truncate)
+   local newVirtText = {}
+   local suffix = ("  %d "):format(endLnum - lnum)
+   local sufWidth = vim.fn.strdisplaywidth(suffix)
+   local targetWidth = width - sufWidth
+   local curWidth = 0
+   for _, chunk in ipairs(virtText) do
+      local chunkText = chunk[1]
+      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      if targetWidth > curWidth + chunkWidth then
+         table.insert(newVirtText, chunk)
+      else
+         chunkText = truncate(chunkText, targetWidth - curWidth)
+         local hlGroup = chunk[2]
+         table.insert(newVirtText, { chunkText, hlGroup })
+         chunkWidth = vim.fn.strdisplaywidth(chunkText)
+         -- str width returned from truncate() may less than 2nd argument, need padding
+         if curWidth + chunkWidth < targetWidth then
+            suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+         end
+         break
+      end
+      curWidth = curWidth + chunkWidth
+   end
+   table.insert(newVirtText, { suffix, "MoreMsg" })
+   return newVirtText
+end
+
 return {
    {
       "lvimuser/lsp-inlayhints.nvim",
@@ -50,6 +78,37 @@ return {
                },
             },
          },
+         -- you can do any additional lsp server setup here
+         -- return true if you don't want this server to be setup with lspconfig
+         ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+         setup = {
+            -- example to setup with typescript.nvim
+            -- tsserver = function(_, opts)
+            --   require("typescript").setup({ server = opts })
+            --   return true
+            -- end,
+            -- Specify * to use this function as a fallback for any server
+            ["*"] = function(_, opts)
+               -- Setup fold capabilities for ufo nvim
+               opts.capabilities.textDocument.foldingRange = {
+                  dynamicRegistration = false,
+                  lineFoldingOnly = true,
+               }
+            end,
+         },
+      },
+   },
+   -- Setup folds
+   {
+      "kevinhwang91/nvim-ufo",
+      dependencies = "kevinhwang91/promise-async",
+      event = "BufRead",
+      opts = {
+         fold_virt_text_handler = handler,
+      },
+      keys = {
+         { "zR", function() require("ufo").openAllFolds() end, { desc = "Open all folds" } },
+         { "zM", function() require("ufo").closeAllFolds() end, { desc = "Close all folds" } },
       },
    },
 }

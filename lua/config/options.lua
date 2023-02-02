@@ -48,3 +48,12 @@ if vim.g.neovide ~= nil then
    vim.g.neovide_transparency = 1
    vim.g.neovide_scroll_animation_length = 0.13 -- in seconds
 end
+
+-- Fold settings
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.fillchars = [[eob:~,fold: ,foldopen:⌄,foldsep:|,foldclose:›]]
+-- status column much similar to vscode
+vim.o.statuscolumn =
+   '%=%#FoldColumn#%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "⌄ " : "› ") : "  " }%*%l %s'
