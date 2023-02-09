@@ -70,3 +70,6 @@ vim.o.fillchars = [[fold: ,foldopen:⌄,foldsep: ,foldclose:›]]
 --    .. "%{v:relnum?v:relnum:v:lnum} "
 --    -- Add sign column
 --    .. "%s"
+
+-- default clipboard settings
+vim.opt.clipboard = ""
