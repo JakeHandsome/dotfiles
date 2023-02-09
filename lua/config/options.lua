@@ -19,7 +19,6 @@ else
    vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 end
 vim.opt.undofile = true
-
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then
@@ -50,10 +49,24 @@ if vim.g.neovide ~= nil then
 end
 
 -- Fold settings
+vim.o.foldcolumn = "auto"
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
-vim.o.fillchars = [[eob:~,fold: ,foldopen:⌄,foldsep:|,foldclose:›]]
+vim.o.fillchars = [[fold: ,foldopen:⌄,foldsep: ,foldclose:›]]
 -- status column much similar to vscode
-vim.o.statuscolumn =
-   '%=%#FoldColumn#%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "⌄ " : "› ") : "  " }%*%l %s'
+-- vim.o.statuscolumn =
+--    -- set Highlight
+--     --"%#FoldColumn#"
+--    -- Add folds
+--     -- .. '%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "⌄ " : "› ") : "  " }'
+--    --   fold coumn
+--      "%C"
+--    -- Right align
+--    .. "%="
+--    -- Highlight line number
+--    .. "%*"
+--    -- set relative line numbers
+--    .. "%{v:relnum?v:relnum:v:lnum} "
+--    -- Add sign column
+--    .. "%s"
