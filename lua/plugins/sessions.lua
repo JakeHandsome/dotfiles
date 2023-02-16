@@ -28,7 +28,7 @@ return {
    {
       "jedrzejboczar/possession.nvim",
       keys = {
-         { "<leader>fw", "<cmd>Telescope possession list<cr>", desc = "Possession list" },
+         { "<leader>fs", "<cmd>Telescope possession list<cr>", desc = "Sessions list" },
       },
       event = "VeryLazy",
       opts = {
