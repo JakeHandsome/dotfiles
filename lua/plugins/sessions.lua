@@ -32,7 +32,7 @@ return {
       },
       event = "VeryLazy",
       opts = {
-         autosave = { current = true },
+         autosave = { current = true, tmp = true, tmp_name = "temp", on_quit = true },
       },
       config = function(_, opts)
          require("possession").setup(opts)
