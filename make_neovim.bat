@@ -2,6 +2,7 @@
 pushd %1
 git checkout master
 git pull
+git clean -fxd
 cmake -S cmake.deps -B .deps -G Ninja -DCMAKE_BUILD_TYPE='Release'
 cmake --build .deps
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE='Release'  -DCMAKE_INSTALL_PREFIX="C:/Program Files/nvim"
