@@ -20,6 +20,7 @@ return {
    -- Also disable in neovide
    { "folke/noice.nvim", cond = vim.g.vscode == nil and vim.g.neovide == nil },
    -- ALways disable
+   { "ggandor/flit.nvim", cond = false },
    { "ggandor/leap.nvim", cond = false },
    { "akinsho/bufferline.nvim", cond = false },
    -- Use different session manager
