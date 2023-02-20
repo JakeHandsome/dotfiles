@@ -12,6 +12,21 @@ return {
          },
       },
    },
+   opts = {
+      defaults = {
+         vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            -- Search ignored directories
+            "-u",
+         },
+      },
+   },
    -- apply the config and additionally load fzf-native
    config = function(_, opts)
       local telescope = require("telescope")

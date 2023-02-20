@@ -1,15 +1,7 @@
 return {
    "goolord/alpha-nvim",
    opts = function(_, dashboard)
-      --            local logo = [[
-      --      ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
-      --      ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z
-      --      ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z
-      --      ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z
-      --      ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
-      --      ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
-      --      ]]
-
+      dashboard.section.header.val = ""
       dashboard.section.buttons.val = {
          dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
          dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
@@ -35,8 +27,11 @@ return {
             local files = vim.split(vim.fn.glob(path .. "/*.json"), "\n")
             for i, file in pairs(files) do
                local basename = vim.fs.basename(file):gsub("%.json", "")
-               local button =
-                  dashboard.button(tostring(i), "勒 " .. basename, "<cmd>PossessionLoad " .. basename .. "<cr>")
+               local button = dashboard.button(
+                  tostring(i),
+                  "勒 " .. tostring(i) .. ":" .. basename,
+                  "<cmd>PossessionLoad " .. basename .. "<cr>"
+               )
                table.insert(group.val, button)
             end
             return group
