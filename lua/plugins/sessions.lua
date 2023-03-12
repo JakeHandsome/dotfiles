@@ -25,18 +25,19 @@ return {
    --       })
    --    end,
    -- },
-   {
-      "jedrzejboczar/possession.nvim",
-      keys = {
-         { "<leader>fs", "<cmd>Telescope possession list<cr>", desc = "Sessions list" },
-      },
-      event = "VeryLazy",
-      opts = {
-         autosave = { current = true, tmp = true, tmp_name = "temp", on_quit = true },
-      },
-      config = function(_, opts)
-         require("possession").setup(opts)
-         require("telescope").load_extension("possession")
-      end,
-   },
+   -- Don't like this session manager either
+   --{
+   --   "jedrzejboczar/possession.nvim",
+   --   keys = {
+   --      { "<leader>fs", "<cmd>Telescope possession list<cr>", desc = "Sessions list" },
+   --   },
+   --   event = "VeryLazy",
+   --   opts = {
+   --      autosave = { current = true, tmp = true, tmp_name = "temp", on_quit = true },
+   --   },
+   --   config = function(_, opts)
+   --      require("possession").setup(opts)
+   --      require("telescope").load_extension("possession")
+   --   end,
+   --},
 }
