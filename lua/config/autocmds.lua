@@ -8,9 +8,18 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
    callback = function(args)
       local token = args.data.token
       if token.modifiers.mutable then
-         st.highlight_token(token, args.buf, args.data.client_id, "UnderlineMutable")
+         st.highlight_token(
+            token,
+            args.buf,
+            args.data.client_id,
+            "UnderlineMutable",
+            { priority = vim.highlight.priorities.semantic_tokens - 1 }
+         )
       end
    end,
 })
 
 vim.api.nvim_set_hl(0, "UnderlineMutable", { underline = true })
+vim.api.nvim_set_hl(0, "@lsp.type.comment.c", { strikethrough = true })
+vim.api.nvim_set_hl(0, "@lsp.type.comment.c", { strikethrough = true })
+vim.api.nvim_set_hl(0, "@lsp.type.comment.cpp", { strikethrough = true })
