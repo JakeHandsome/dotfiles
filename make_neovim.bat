@@ -9,3 +9,6 @@ cmake -B build -G Ninja -DCMAKE_BUILD_TYPE='Release'  -DCMAKE_INSTALL_PREFIX="C:
 cmake --build build
 sudo ninja -C build install
 popd
+
+:: Update nvim plugins
+nvim --headless "+Lazy! sync" +qa
