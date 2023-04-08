@@ -31,3 +31,7 @@ vim.keymap.set(
    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
    { desc = "Search and replace" }
 )
+
+-- Disable tab for swithing buffers, must us <C-I> instead
+vim.keymap.set("n", "<C-I>", "<C-I>", { desc = "Go to newer cursor position in jump list" })
+vim.keymap.set("n", "<Tab>", "<Nop>")
