@@ -13,6 +13,7 @@ return {
       enabled = true,
       input_after_comment = true,
    },
+   cond = false, -- Currently causing errors with color scheme.
    -- Uncomment next line if you want to follow only stable versions
    -- version = "*"
 }
