@@ -4,6 +4,11 @@ return {
    {
       "L3MON4D3/LuaSnip",
       keys = function() return {} end,
+      opts = {
+         history = true,
+         region_check_events = "InsertEnter",
+         delete_check_events = "TextChanged,InsertLeave",
+      },
    },
    {
       "hrsh7th/nvim-cmp",
