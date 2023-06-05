@@ -29,6 +29,7 @@ end
 return {
    {
       "lvimuser/lsp-inlayhints.nvim",
+      branch = "anticonceal",
       event = "BufReadPre",
       config = function()
          require("lsp-inlayhints").setup()
