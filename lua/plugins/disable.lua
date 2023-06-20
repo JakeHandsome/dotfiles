@@ -6,7 +6,6 @@ return {
    { "neovim/nvim-lspconfig", cond = vim.g.vscode == nil },
    { "hrsh7th/nvim-cmp", cond = vim.g.vscode == nil },
    { "williamboman/mason.nvim", cond = vim.g.vscode == nil },
-   { "lvimuser/lsp-inlayhints.nvim", cond = vim.g.vscode == nil },
    { "kosayoda/nvim-lightbulb", cond = vim.g.vscode == nil },
    { "nvim-neo-tree/neo-tree.nvim", cond = vim.g.vscode == nil },
    { "akinsho/toggleterm.nvim", cond = vim.g.vscode == nil },

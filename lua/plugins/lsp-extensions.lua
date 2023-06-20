@@ -27,17 +27,6 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
 end
 
 return {
-   {
-      "lvimuser/lsp-inlayhints.nvim",
-      branch = "anticonceal",
-      event = "BufReadPre",
-      config = function()
-         require("lsp-inlayhints").setup()
-         require("lazyvim.util").on_attach(
-            function(client, bufnr) require("lsp-inlayhints").on_attach(client, bufnr, false) end
-         )
-      end,
-   },
    -- nvim lightbulb
    {
       "kosayoda/nvim-lightbulb",

@@ -23,3 +23,14 @@ vim.api.nvim_set_hl(0, "UnderlineMutable", { underline = true })
 vim.api.nvim_set_hl(0, "@lsp.type.comment.c", { strikethrough = true })
 vim.api.nvim_set_hl(0, "@lsp.type.comment.c", { strikethrough = true })
 vim.api.nvim_set_hl(0, "@lsp.type.comment.cpp", { strikethrough = true })
+
+-- LspInlayHints
+vim.api.nvim_create_autocmd("LspAttach", {
+   callback = function(args)
+      local bufnr = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client.server_capabilities.inlayHintProvider then
+         vim.lsp.buf.inlay_hint(bufnr, true)
+      end
+   end,
+})
