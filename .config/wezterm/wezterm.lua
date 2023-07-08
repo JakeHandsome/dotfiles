@@ -42,6 +42,8 @@ local config = {
       { key = "n", mods = "SHIFT|CTRL", action = "ToggleFullScreen" },
       { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
       { key = "c", mods = "SHIFT|CTRL", action = wezterm.action.CopyTo("Clipboard") },
+
+      { key = "P", mods = "LEADER|CTRL", action = wezterm.action.ActivateCommandPalette },
    },
    set_environment_variables = {},
    font = wezterm.font("Iosevka Nerd Font"),
