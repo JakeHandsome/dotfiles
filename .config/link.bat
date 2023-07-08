@@ -1,1 +1,1 @@
-sudo mklink %USERPROFILE%\.config %CD%
+sudo mklink %USERPROFILE%\.config %CD% /D
