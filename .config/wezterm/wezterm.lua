@@ -4,6 +4,26 @@ wezterm.on("update-right-status", function(window, pane)
 	window:set_right_status(window:active_workspace())
 end)
 
+-- Equivalent to POSIX basename(3)
+-- Given "/foo/bar" returns "bar"
+-- Given "c:\\foo\\bar" returns "bar"
+function basename(s)
+	s = string.gsub(s, ".exe", "")
+	return string.gsub(s, "(.*[/\\])(.*)", "%2")
+end
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	local pane = tab.active_pane
+	local title = 1 + tab.tab_index
+		.. ": "
+		.. string.gsub(pane.current_working_dir, "file:///", "")
+		.. " - "
+		.. basename(pane.foreground_process_name)
+	return {
+		{ Text = " " .. title .. " " },
+	}
+end)
+
 local config = {
 	check_for_updates = true,
 	color_scheme = "carbonfox",
@@ -105,6 +125,13 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		"-startdir=none",
 		"-arch=x64",
 		"-host_arch=x64",
+	}
+	config.mouse_bindings = {
+		{
+			event = { Down = { streak = 1, button = "Right" } },
+			mods = "NONE",
+			action = wezterm.action.PasteFrom("PrimarySelection"),
+		},
 	}
 
 	-- Find installed visual studio version(s) and add their compilation
