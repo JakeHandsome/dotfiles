@@ -9,3 +9,5 @@ doskey cd=cd /D $*
 :: use exa instead of ls
 doskey ls=exa $*
 doskey vim=nvim $*
+:: core utils
+for  %%i in (arch b2sum b3sum base32 base64 basename basenc cat cksum comm cp csplit cut date dd df dir dircolors dirname du echo env expand expr factor false fmt hashsum hostname join link ln md5sum mkdir mktemp more mv nl nproc numfmt od paste pr printenv printf ptx pwd readlink realpath relpath rm rmdir runcon seq sha1sum sha224sum sha256sum sha3-224sum sha3-256sum sha3-384sum sha3-512sum sha384sum sha3sum sha512sum shake128sum shake256sum shred shuf sleep sort split sum sync tac tail tee test touch tr true truncate tsort uname unexpand uniq unlink vdir wc whoami yes) do doskey %%i=coreutils %%i $*
