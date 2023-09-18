@@ -16,6 +16,7 @@ return {
    --   { "SmiteshP/nvim-navic", cond = vim.g.vscode == nil },
    --   { "goolord/alpha-nvim", cond = vim.g.vscode == nil },
    --   { "nvim-treesitter/nvim-treesitter", cond = vim.g.vscode == nil },
+   { "folke/flash.nvim", cond = vim.g.vscode == nil },
    -- Also disable in neovide
    { "folke/noice.nvim", cond = vim.g.vscode == nil and vim.g.neovide == nil },
    -- ALways disable
