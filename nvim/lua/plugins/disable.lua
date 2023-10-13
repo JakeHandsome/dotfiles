@@ -21,6 +21,4 @@ return {
    { "folke/noice.nvim", cond = vim.g.vscode == nil and vim.g.neovide == nil },
    -- ALways disable
    { "akinsho/bufferline.nvim", cond = false },
-   -- Use different session manager
-   { "folke/persistence.nvim", cond = false, keys = function() return {} end },
 }

@@ -40,4 +40,5 @@ return {
    --      require("telescope").load_extension("possession")
    --   end,
    --},
+   -- { "folke/persistence.nvim", cond = false, keys = function() return {} end },
 }
