@@ -26,7 +26,8 @@ end)
 
 local config = {
 	check_for_updates = true,
-	color_scheme = "carbonfox",
+	--color_scheme = "carbonfox",
+	color_scheme = 'Gruvbox dark, hard (base16)',
 	inactive_pane_hsb = {
 		hue = 1.0,
 		saturation = 1.0,

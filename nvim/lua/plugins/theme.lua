@@ -27,6 +27,14 @@ return {
       "EdenEast/nightfox.nvim",
       build = ":NightfoxCompile",
       priority = 1000,
-      config = function() vim.cmd([[colorscheme carbonfox]]) end,
+      -- config = function() vim.cmd([[colorscheme carbonfox]]) end,
+   },
+   {
+      "ellisonleao/gruvbox.nvim",
+      priority = 1000,
+      config = function()
+         vim.o.background = "dark"
+         vim.cmd([[colorscheme gruvbox]])
+      end,
    },
 }
