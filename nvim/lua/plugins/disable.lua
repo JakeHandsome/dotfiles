@@ -18,7 +18,10 @@ return {
    --   { "nvim-treesitter/nvim-treesitter", cond = vim.g.vscode == nil },
    { "folke/flash.nvim", cond = vim.g.vscode == nil },
    -- Also disable in neovide
-   { "folke/noice.nvim", cond = vim.g.vscode == nil and vim.g.neovide == nil },
+   {
+      "folke/noice.nvim",
+      cond = vim.g.vscode == nil and vim.g.neovide == nil and false,
+   },
    -- ALways disable
    { "akinsho/bufferline.nvim", cond = false },
 }
