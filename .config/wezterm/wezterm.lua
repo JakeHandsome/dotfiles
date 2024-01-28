@@ -16,7 +16,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
    local pane = tab.active_pane
    local title = 1 + tab.tab_index
       .. ": "
-      .. string.gsub(pane.current_working_dir, "file:///", "")
+      .. pane.current_working_dir.file_path
       .. " - "
       .. basename(pane.foreground_process_name)
    return {
