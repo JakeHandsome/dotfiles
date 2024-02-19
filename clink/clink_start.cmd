@@ -17,4 +17,9 @@ doskey cd=%APPDATA%\fnm\cd.cmd $*
 doskey nvm=fnm $*
 where zoxide  > nul 2>&1 || echo "Installing zoxide" && cargo binstall -y zoxide
 
+
+
+:: Shortcut for explorer
+doskey ex=explorer $*
+
 if %USERNAME%==jh49249 (curl -u %USERNAME%:%GITHUB_AT% -X PATCH https://github.deere.com/api/v3/user -d "{\"name\":\"Jake Hansen\"}" -H "Accept: application/vnd.github.v3+json" | json name) else (echo "not working")
