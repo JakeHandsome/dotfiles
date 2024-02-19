@@ -12,8 +12,9 @@ doskey ls=eza $*
 
 where fnm  > nul 2>&1 || echo "Installing fnm" && cargo binstall -y fnm
 FOR /f "tokens=*" %%i IN ('fnm env --use-on-cd') DO CALL %%i
-doskey cd=%APPDATA%\fnm\cd.cmd /D $*
+doskey cd=%APPDATA%\fnm\cd.cmd $*
 :: Use fnm over nvm
 doskey nvm=fnm $*
+where zoxide  > nul 2>&1 || echo "Installing zoxide" && cargo binstall -y zoxide
 
 if %USERNAME%==jh49249 (curl -u %USERNAME%:%GITHUB_AT% -X PATCH https://github.deere.com/api/v3/user -d "{\"name\":\"Jake Hansen\"}" -H "Accept: application/vnd.github.v3+json" | json name) else (echo "not working")

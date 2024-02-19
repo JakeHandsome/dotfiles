@@ -64,6 +64,10 @@ color.filtered = sgr 38;5;231
 # type: color
 color.flag = sgr 38;5;117
 
+# name: Color for preferred branch completions
+# type: color
+color.git.star = bright green
+
 # name: Hidden file completions
 # type: color
 color.hidden = sgr 38;5;160
@@ -108,6 +112,14 @@ color.unexpected = default
 # type: color
 color.unrecognized = sgr 38;5;203
 
+# name: Color for yarn run local module
+# type: color
+color.yarn.module = bright green
+
+# name: Color for yarn run project.json script
+# type: color
+color.yarn.script = bright blue
+
 # name: The number of history lines to save
 # type: integer
 history.max_lines = 25000
@@ -124,4 +136,8 @@ match.expand_envvars = True
 # name: Try substring if no prefix matches
 # type: boolean
 match.substring = True
+
+# name: Changes the prefix of the aliases
+# type: string
+zoxide.cmd = cd
 
