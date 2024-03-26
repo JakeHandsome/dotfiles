@@ -24,4 +24,5 @@ return {
    },
    -- ALways disable
    { "akinsho/bufferline.nvim", cond = false },
+   { "akinsho/toggleterm.nvim", cond = false },
 }
