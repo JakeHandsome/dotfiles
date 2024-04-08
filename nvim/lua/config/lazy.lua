@@ -32,7 +32,7 @@ require("lazy").setup({
       version = false, -- always use the latest git commit
       -- version = "*", -- try installing the latest stable version for plugins that support semver
    },
-   install = { colorscheme = { "tokyonight", "habamax", "monokai", "carbonfox" } },
+   install = { colorscheme = { "gruvbox" } },
    -- Dont check for updates when running in vscode since lazy UI doesn't work
    checker = { enabled = vim.g.vscode == nil, notify = vim.g.vscode == nil }, -- automatically check for plugin updates
    performance = {
