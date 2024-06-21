@@ -1,9 +1,10 @@
 {
   "extras": [
-
+    "lazyvim.plugins.extras.coding.luasnip",
+    "lazyvim.plugins.extras.ui.mini-indentscope"
   ],
   "news": {
-    "NEWS.md": "6077"
+    "NEWS.md": "6258"
   },
   "version": 6
 }

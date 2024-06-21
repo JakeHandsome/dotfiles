@@ -33,8 +33,13 @@ require("lazy").setup({
       -- version = "*", -- try installing the latest stable version for plugins that support semver
    },
    install = { colorscheme = { "gruvbox" } },
-   -- Dont check for updates when running in vscode since lazy UI doesn't work
-   checker = { enabled = vim.g.vscode == nil, notify = vim.g.vscode == nil }, -- automatically check for plugin updates
+   -- automatically check for plugin updates
+   checker = {
+      -- Dont check for updates when running in vscode since lazy UI doesn't work
+      enabled = vim.g.vscode == nil,
+      notify = vim.g.vscode == nil,
+      frequency = "86400",
+   },
    performance = {
       rtp = {
          -- disable some rtp plugins
