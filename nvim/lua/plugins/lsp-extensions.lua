@@ -38,6 +38,8 @@ return {
       "neovim/nvim-lspconfig",
       ---@class PluginLspOpts
       opts = {
+         -- enable inlay hints by default
+         inlay_hints = { enabled = true },
          ---@type lspconfig.options
          servers = {
             -- Setup tsserver following lsp-inlayhints docs
