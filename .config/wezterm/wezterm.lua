@@ -75,7 +75,7 @@ config.keys = {
     { key = "x", mods = "LEADER", action = wezterm.action({ CloseCurrentPane = { confirm = true } }) },
 
     { key = "n", mods = "SHIFT|CTRL", action = "ToggleFullScreen" },
-    { key = "v", mods = "CTRL", action = wezterm.action.PasteFrom("Clipboard") },
+    { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
     {
         key = 'c',
         mods = 'CTRL',
