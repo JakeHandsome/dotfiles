@@ -2,6 +2,8 @@ return {
    "nvim-treesitter/nvim-treesitter-context",
    event = { "BufReadPost", "BufNewFile" },
    opts = {
-      mode = "topline",
+      max_lines = 6,
+      mode = "cursor",
+      trim_scope = "inner",
    },
 }
