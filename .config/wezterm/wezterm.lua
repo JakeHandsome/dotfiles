@@ -24,6 +24,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
+local font = "Iosevka";
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+    font = "Iosevka Nerd Font"
+end
+
 local config = {
     check_for_updates = true,
     --color_scheme = "carbonfox",
@@ -38,7 +43,7 @@ local config = {
     leader = { key = "a", mods = "CTRL" },
     disable_default_key_bindings = true,
     set_environment_variables = {},
-    font = wezterm.font_with_fallback({ "Iosevka Nerd Font", "Iosevka" }),
+    font = wezterm.font(font),
     hide_tab_bar_if_only_one_tab = false,
     tab_bar_at_bottom = true,
 }
