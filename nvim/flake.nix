@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { nixpkgs, nv, ... }: 
+  outputs = { nixpkgs, nv, ... }:
   let
     # Copied from flake utils
     eachSystem = with builtins; systems: f:
@@ -36,9 +36,9 @@
              then []
              else [ currentSystem ]
           else []));
-    
+
     forEachSystem = eachSystem nixpkgs.lib.platforms.all;
-  in 
+  in
   let
     # Easily configure a custom name, this will affect the name of the standard
     # executable, you can add as many aliases as you'd like in the configuration.
@@ -46,29 +46,52 @@
 
     # Any custom package config you would like to do.
     extra_pkg_config = {
-        # allow_unfree = true;
+        allow_unfree = true;
     };
 
-    configuration = { pkgs, ... }: 
+    configuration = { pkgs, ... }:
     let
       patchUtils = nv.patchUtils.${pkgs.system};
-    in 
+    in
     {
       # The path to your neovim configuration.
       luaPath = ./.;
 
       # Plugins you use in your configuration.
-      plugins = with pkgs.vimPlugins; [ ];
+      plugins = with pkgs.vimPlugins; [
+         lazy-nvim
+         LazyVim
+         noice-nvim
+         bufferline-nvim
+         flash-nvim
+         lualine-nvim
+         rustaceanvim
+         nui-nvim
+      ];
 
       # Runtime dependencies. This is thing like tree-sitter, lsps or programs
       # like ripgrep.
-      runtimeDeps = with pkgs; [ ];
+      runtimeDeps = with pkgs; [
+         fd
+         ripgrep
+         tree-sitter
+
+         rust-analyzer
+         cargo
+         rustc
+
+         stylua
+         rustfmt
+         nil
+         clang
+
+      ];
 
       # Environment variables set during neovim runtime.
       environmentVariables = { };
 
       # Aliases for the patched config
-      aliases = [ "vim" "vi" ];
+      aliases = [ "vim" "vi" "nvim" ];
 
       # Extra wrapper args you want to pass.
       # Look here if you don't know what those are:
@@ -90,17 +113,17 @@
 
       # Extra lua configuration put at the top of your init.lua
       # This cannot replace your init.lua, if none exists in your configuration
-      # this will not be writtern. 
+      # this will not be writtern.
       # Must be provided as a list of strings.
       extraConfig = [ ];
 
-      # Custom subsitutions you want the patcher to make. Custom subsitutions 
+      # Custom subsitutions you want the patcher to make. Custom subsitutions
       # can be generated using
       customSubs = with patchUtils; [];
             # For example, if you want to add a plugin with the short url
             # "cool/plugin" which is in nixpkgs as plugin-nvim you would do:
             # ++ (patchUtils.githubUrlSub "cool/plugin" plugin-nvim);
-            # If you would want to replace the string "replace_me" with "replaced" 
+            # If you would want to replace the string "replace_me" with "replaced"
             # you would have to do:
             # ++ (patchUtils.stringSub "replace_me" "replaced")
             # For more examples look here: https://github.com/NicoElbers/nv/blob/main/subPatches.nix
@@ -118,17 +141,17 @@
         # Enable the python3 provider
         withPython3 = false;
 
-        # Any extra name 
+        # Any extra name
         extraName = "";
 
         # The default config directory for neovim
-        configDirName = "nvim";
+        configDirName = "nvim2";
 
         # Any other neovim package you would like to use, for example nightly
         neovim-unwrapped = null;
 
         # Whether to add custom subsitution made in the original repo, makes for
-        # a better out of the box experience 
+        # a better out of the box experience
         patchSubs = true;
 
         # Whether to add runtime dependencies to the back of the path
@@ -138,9 +161,9 @@
         suffix-LD = false;
       };
     };
-  in 
+  in
   forEachSystem (system: {
-    packages.default = 
+    packages.default =
       nv.configWrapper.${system} { inherit configuration extra_pkg_config name; };
   });
 }
