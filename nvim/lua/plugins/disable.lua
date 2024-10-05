@@ -25,7 +25,7 @@ return {
    -- ALways disable
    { "akinsho/bufferline.nvim", cond = false },
    { "akinsho/toggleterm.nvim", cond = false },
-   { "mason-lspconfig.nvim", cond = !vim.g.NixOs },
-   { "mason-nvim-dap.nvim", cond = !vim.g.NixOs },
-   { "mason.nvim", cond = !vim.g.NixOs },
+   { "mason-lspconfig.nvim", cond = not vim.g.NixOs },
+   { "mason-nvim-dap.nvim", cond = not vim.g.NixOs },
+   { "mason.nvim", cond = not vim.g.NixOs },
 }
