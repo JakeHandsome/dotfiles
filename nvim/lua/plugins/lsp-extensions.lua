@@ -42,6 +42,8 @@ return {
          inlay_hints = { enabled = true },
          ---@type lspconfig.options
          servers = {
+            lua_ls = {},
+            nil_ls = {},
             -- Setup tsserver following lsp-inlayhints docs
             tsserver = {
                settings = {
