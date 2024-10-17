@@ -24,7 +24,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
-local font = "Iosevka";
+local font = "Iosevka"
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     font = "Iosevka Nerd Font"
 end
@@ -38,6 +38,7 @@ local config = {
         saturation = 1.0,
         brightness = 1.0,
     },
+    front_end = "WebGpu",
     font_size = 12.0,
     launch_menu = {},
     leader = { key = "a", mods = "CTRL" },
@@ -82,15 +83,15 @@ config.keys = {
     { key = "n", mods = "SHIFT|CTRL", action = "ToggleFullScreen" },
     { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
     {
-        key = 'c',
-        mods = 'CTRL',
+        key = "c",
+        mods = "CTRL",
         action = wezterm.action_callback(function(window, pane)
             selection_text = window:get_selection_text_for_pane(pane)
             is_selection_active = string.len(selection_text) ~= 0
             if is_selection_active then
-                window:perform_action(wezterm.action.CopyTo('Clipboard'), pane)
+                window:perform_action(wezterm.action.CopyTo("Clipboard"), pane)
             else
-                window:perform_action(wezterm.action.SendKey{ key='c', mods='CTRL' }, pane)
+                window:perform_action(wezterm.action.SendKey({ key = "c", mods = "CTRL" }), pane)
             end
         end),
     },
