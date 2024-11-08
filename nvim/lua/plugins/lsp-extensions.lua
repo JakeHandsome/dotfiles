@@ -43,7 +43,22 @@ return {
          ---@type lspconfig.options
          servers = {
             lua_ls = {},
-            nil_ls = {},
+            -- nil_ls = {},
+            nixd = {
+               settings = {
+                  nixd = {
+                     nixpkgs = {
+                        expr = "import <nixpkgs> {}",
+                     },
+                     formatting = { command = { "nixfmt" } },
+                     options = {
+                        nixos = {
+                           expr = '(builtins.getFlake "/home/jake/nix-config").nixosConfigurations.jake-nixos-desktop.options',
+                        },
+                     },
+                  },
+               },
+            },
             -- Setup tsserver following lsp-inlayhints docs
             tsserver = {
                settings = {
