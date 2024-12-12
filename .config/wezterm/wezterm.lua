@@ -47,6 +47,9 @@ local config = {
     font = wezterm.font(font),
     hide_tab_bar_if_only_one_tab = false,
     tab_bar_at_bottom = true,
+    -- Increase the launch size
+    initial_rows = 40,
+    initial_cols = 200,
 }
 config.keys = {
     -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
