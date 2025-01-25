@@ -74,3 +74,6 @@ vim.o.fillchars = [[fold: ,foldopen:⌄,foldsep: ,foldclose:›]]
 
 -- default clipboard settings
 vim.opt.clipboard = ""
+
+-- No animations
+vim.g.snacks_animate = false
