@@ -64,6 +64,7 @@ return {
             lua_ls = {},
             -- nil_ls = {},
             nixd = {
+               enabled = vim.g.NixOs,
                settings = {
                   nixd = {
                      nixpkgs = {
