@@ -77,3 +77,8 @@ vim.opt.clipboard = ""
 
 -- No animations
 vim.g.snacks_animate = false
+
+-- Rounded popup windows
+vim.opt.winborder = "rounded"
+
+vim.diagnostic.config({ virtual_lines = false, virtual_text = true })

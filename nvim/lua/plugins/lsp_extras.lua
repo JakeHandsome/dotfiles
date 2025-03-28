@@ -1,31 +1,22 @@
--- TODO: This was used for "fold virtual text" previously don't know if that is still needed
-local handler = function(virtText, lnum, endLnum, width, truncate)
-   local newVirtText = {}
-   local suffix = ("  %d "):format(endLnum - lnum)
-   local sufWidth = vim.fn.strdisplaywidth(suffix)
-   local targetWidth = width - sufWidth
-   local curWidth = 0
-   for _, chunk in ipairs(virtText) do
-      local chunkText = chunk[1]
-      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-      if targetWidth > curWidth + chunkWidth then
-         table.insert(newVirtText, chunk)
-      else
-         chunkText = truncate(chunkText, targetWidth - curWidth)
-         local hlGroup = chunk[2]
-         table.insert(newVirtText, { chunkText, hlGroup })
-         chunkWidth = vim.fn.strdisplaywidth(chunkText)
-         -- str width returned from truncate() may less than 2nd argument, need padding
-         if curWidth + chunkWidth < targetWidth then
-            suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-         end
-         break
-      end
-      curWidth = curWidth + chunkWidth
-   end
-   table.insert(newVirtText, { suffix, "MoreMsg" })
-   return newVirtText
-end
+vim.g.rustaceanvim = {
+   -- LSP configuration
+   server = {
+      on_attach = function(client, bufnr)
+         -- you can also put keymaps in here
+      end,
+      default_settings = {
+         -- rust-analyzer language server configuration
+         ["rust-analyzer"] = {
+            diagnostics = {
+               disabled = "unlinked-file",
+               experimental = {
+                  enable = true,
+               },
+            },
+         },
+      },
+   },
+}
 
 return {
    -- nvim lightbulb

@@ -14,9 +14,16 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move highlighted line" })
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Better J (join lines without moving cursor from initial location)" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Move up one screen" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Move down one screen" })
-vim.keymap.set("n", "n", "nzzzv", {desc = "Move to the next search result while centering the screen"})
-vim.keymap.set("n", "N", "Nzzzv", {desc = "Move to the last search result while centering the screen"})
+vim.keymap.set("n", "n", "nzzzv", { desc = "Move to the next search result while centering the screen" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Move to the last search result while centering the screen" })
 
 -- Disable tab for swithing buffers, must us <C-I> instead
 vim.keymap.set("n", "<C-I>", "<C-I>", { desc = "Go to newer cursor position in jump list" })
 vim.keymap.set("n", "<Tab>", "<Nop>")
+
+-- Toggle between virtual text and lines
+vim.keymap.set("n", "<leader>ue", function()
+   local lines = not vim.diagnostic.config().virtual_lines
+   local text = not vim.diagnostic.config().virtual_text
+   vim.diagnostic.config({ virtual_lines = lines, virtual_text = text })
+end, { desc = "Toggle multiline diagnostics" })
