@@ -38,7 +38,7 @@ local config = {
       brightness = 1.0,
    },
    front_end = "WebGpu",
-   font_size = 12.0,
+   font_size = 11.0,
    launch_menu = {},
    leader = { key = "a", mods = "CTRL" },
    disable_default_key_bindings = true,
@@ -84,6 +84,8 @@ config.keys = {
 
    { key = "n", mods = "SHIFT|CTRL", action = "ToggleFullScreen" },
    { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
+   { key = "PageUp", mods = "SHIFT|CTRL", action = wezterm.action.MoveTabRelative(1) },
+   { key = "PageDown", mods = "SHIFT|CTRL", action = wezterm.action.MoveTabRelative(-1) },
    {
       key = "c",
       mods = "CTRL",
