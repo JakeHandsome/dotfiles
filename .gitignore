@@ -1,3 +1,2 @@
 *.orig
 .config/configstore
-lazy-lock.json
