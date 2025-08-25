@@ -5,3 +5,12 @@
 (deflayer base
    esc
 )
+
+(defcfg
+   process-unmapped-keys yes
+   concurrent-tap-hold yes
+)
+;; converting the copilot key into Control+Shift+Esc (task manager)
+(defchordsv2
+ (lsft lmet f23) C-S-esc 10 all-released ()
+)
