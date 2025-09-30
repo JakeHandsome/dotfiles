@@ -4,7 +4,7 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-   require 'plugins.lang.rust',
+   require('plugins.lang.rust'),
    { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
    },
@@ -42,7 +42,7 @@ return {
          {
             'nvim-telescope/telescope-fzf-native.nvim',
             build = 'make',
-            cond = function() return vim.fn.executable 'make' == 1 end,
+            cond = function() return vim.fn.executable('make') == 1 end,
          },
          { 'nvim-telescope/telescope-ui-select.nvim' },
          { 'nvim-tree/nvim-web-devicons' },
@@ -69,7 +69,7 @@ return {
 
          -- [[ Configure Telescope ]]
          -- See `:help telescope` and `:help telescope.setup()`
-         require('telescope').setup {
+         require('telescope').setup({
             -- You can put your default mappings / updates / etc. in here
             --  All the info you're looking for is in `:help telescope.setup()`
             --
@@ -84,14 +84,14 @@ return {
                   require('telescope.themes').get_dropdown(),
                },
             },
-         }
+         })
 
          -- Enable Telescope extensions if they are installed
          pcall(require('telescope').load_extension, 'fzf')
          pcall(require('telescope').load_extension, 'ui-select')
 
          -- See `:help telescope.builtin`
-         local builtin = require 'telescope.builtin'
+         local builtin = require('telescope.builtin')
          vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
          vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
          vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -106,10 +106,10 @@ return {
          -- Slightly advanced example of overriding default behavior and theme
          vim.keymap.set('n', '<leader>/', function()
             -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-            builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+            builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
                winblend = 10,
                previewer = false,
-            })
+            }))
          end, { desc = '[/] Fuzzily search in current buffer' })
 
          -- It's also possible to pass additional configuration options.
@@ -118,10 +118,10 @@ return {
             'n',
             '<leader>s/',
             function()
-               builtin.live_grep {
+               builtin.live_grep({
                   grep_open_files = true,
                   prompt_title = 'Live Grep in Open Files',
-               }
+               })
             end,
             { desc = '[S]earch [/] in Open Files' }
          )
@@ -130,7 +130,7 @@ return {
          vim.keymap.set(
             'n',
             '<leader>sn',
-            function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
+            function() builtin.find_files({ cwd = vim.fn.stdpath('config') }) end,
             { desc = '[S]earch [N]eovim files' }
          )
       end,
@@ -156,7 +156,7 @@ return {
       keys = {
          {
             '<leader>f',
-            function() require('conform').format { async = true, lsp_format = 'fallback' } end,
+            function() require('conform').format({ async = true, lsp_format = 'fallback' }) end,
             mode = '',
             desc = '[F]ormat buffer',
          },
@@ -190,7 +190,7 @@ return {
                -- Build Step is needed for regex support in snippets.
                -- This step is not supported in many windows environments.
                -- Remove the below condition to re-enable on windows.
-               if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+               if vim.fn.has('win32') == 1 or vim.fn.executable('make') == 0 then
                   return
                end
                return 'make install_jsregexp'
@@ -281,8 +281,8 @@ return {
          'nvim-tree/nvim-web-devicons',
       },
       config = function()
-         require('nvim-tree').setup {}
-         local api = require 'nvim-tree.api'
+         require('nvim-tree').setup({})
+         local api = require('nvim-tree.api')
          vim.keymap.set('n', '<leader>e', function() api.tree.toggle() end, { desc = 'Toggle Tree' })
       end,
    },
@@ -303,7 +303,7 @@ return {
          --  - va)  - [V]isually select [A]round [)]paren
          --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
          --  - ci'  - [C]hange [I]nside [']quote
-         require('mini.ai').setup { n_lines = 500 }
+         require('mini.ai').setup({ n_lines = 500 })
 
          -- Add/delete/replace surroundings (brackets, quotes, etc.)
          --
@@ -315,9 +315,9 @@ return {
          -- Simple and easy statusline.
          --  You could remove this setup call if you don't like it,
          --  and try some other statusline plugin
-         local statusline = require 'mini.statusline'
+         local statusline = require('mini.statusline')
          -- set use_icons to true if you have a Nerd Font
-         statusline.setup { use_icons = true }
+         statusline.setup({ use_icons = true })
 
          -- You can configure sections in the statusline by overriding their
          -- default behavior. For example, here we set the section for
@@ -332,7 +332,7 @@ return {
    { -- Highlight, edit, and navigate code
       'nvim-treesitter/nvim-treesitter',
       build = ':TSUpdate',
-      main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+      --main = 'nvim-treesitter.configs', -- Sets main module to use for opts
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
       opts = {
          ensure_installed = {
