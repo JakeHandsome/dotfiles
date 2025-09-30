@@ -6,9 +6,6 @@ vim.filetype.add({
 
 require('config.options')
 
--- Enable break indent
-vim.o.breakindent = true
-
 -- [[ Basic Keymaps ]]
 require('config.keymaps')
 --  See `:help vim.keymap.set()`
