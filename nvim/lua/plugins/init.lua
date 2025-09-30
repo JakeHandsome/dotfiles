@@ -5,6 +5,7 @@
 -- See the kickstart.nvim README for more information
 return {
    require('plugins.lang.rust'),
+   require('plugins.ui.notifications'),
    { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
    },
