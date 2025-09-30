@@ -20,9 +20,9 @@ map('n', '<Tab>', '<Nop>')
 
 -- Toggle between virtual text and lines
 map('n', '<leader>ue', function()
-  local lines = not vim.diagnostic.config().virtual_lines
-  local text = not vim.diagnostic.config().virtual_text
-  vim.diagnostic.config { virtual_lines = lines, virtual_text = text }
+   local lines = not vim.diagnostic.config().virtual_lines
+   local text = not vim.diagnostic.config().virtual_text
+   vim.diagnostic.config({ virtual_lines = lines, virtual_text = text })
 end, { desc = 'Toggle multiline diagnostics' })
 --
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -77,3 +77,8 @@ map('v', '<', '<gv')
 map('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split Window Right', remap = true })
 map('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
+
+map('n', '<leader>uf', function()
+   vim.g.autoformat = not vim.g.autoformat
+   vim.notify('Auto format: ' .. tostring(vim.g.autoformat), vim.log.levels.INFO, { title = 'Format toggle' })
+end, { desc = 'Toggle auto format' })

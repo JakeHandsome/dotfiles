@@ -1,28 +1,28 @@
 local os_version = vim.loop.os_uname().version
-vim.g.NixOs = os_version:match 'NixOS' ~= nil
-vim.filetype.add {
+vim.g.NixOs = os_version:match('NixOS') ~= nil
+vim.filetype.add({
    extension = { sysarch = 'jsonc' },
-}
+})
 
-require 'config.options'
+require('config.options')
 
 -- Enable break indent
 vim.o.breakindent = true
 
 -- [[ Basic Keymaps ]]
-require 'config.keymaps'
+require('config.keymaps')
 --  See `:help vim.keymap.set()`
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-require 'config.autocmds'
+require('config.autocmds')
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
    local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-   local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+   local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
    if vim.v.shell_error ~= 0 then
       error('Error cloning lazy.nvim:\n' .. out)
    end
@@ -43,9 +43,9 @@ rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup {
+require('lazy').setup({
    { import = 'plugins' },
-}
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -14,20 +14,20 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 
 if vim.loop.os_uname().sysname == 'Windows_NT' then
-  vim.opt.undodir = os.getenv 'UserProfile' .. '/.vim/undodir'
+   vim.opt.undodir = os.getenv('UserProfile') .. '/.vim/undodir'
 else
-  vim.opt.undodir = os.getenv 'HOME' .. '/.vim/undodir'
+   vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
 end
 vim.opt.undofile = true
 vim.opt.incsearch = true
 
 if vim.g.vscode == nil then
-  vim.opt.termguicolors = true
+   vim.opt.termguicolors = true
 end
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = 'yes'
-vim.opt.isfname:append '@-@'
+vim.opt.isfname:append('@-@')
 
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = '120'
@@ -41,11 +41,11 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '-->', nbsp = '␣', eol = '¬', space = '·' }
 
 if vim.g.neovide ~= nil then
-  vim.g.neovide_hide_mouse_when_typing = true
-  vim.g.neovide_cursor_vfx_mode = 'pixiedust'
-  -- No transparency
-  vim.g.neovide_transparency = 1
-  vim.g.neovide_scroll_animation_length = 0.13 -- in seconds
+   vim.g.neovide_hide_mouse_when_typing = true
+   vim.g.neovide_cursor_vfx_mode = 'pixiedust'
+   -- No transparency
+   vim.g.neovide_transparency = 1
+   vim.g.neovide_scroll_animation_length = 0.13 -- in seconds
 end
 
 -- Fold settings
@@ -80,7 +80,7 @@ vim.g.snacks_animate = false
 -- Rounded popup windows
 vim.opt.winborder = 'rounded'
 
-vim.diagnostic.config { virtual_lines = false, virtual_text = true }
+vim.diagnostic.config({ virtual_lines = false, virtual_text = true })
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -103,3 +103,5 @@ vim.o.cursorline = true
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+vim.g.autoformat = true
