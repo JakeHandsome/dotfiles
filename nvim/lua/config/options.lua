@@ -24,6 +24,9 @@ vim.opt.incsearch = true
 if vim.g.vscode == nil then
    vim.opt.termguicolors = true
 end
+-- Enable break indent
+vim.o.breakindent = true
+vim.o.wrap = false
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = 'yes'

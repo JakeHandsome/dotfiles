@@ -81,4 +81,8 @@ map('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
 map('n', '<leader>uf', function()
    vim.g.autoformat = not vim.g.autoformat
    vim.notify('Auto format: ' .. tostring(vim.g.autoformat), vim.log.levels.INFO, { title = 'Format toggle' })
-end, { desc = 'Toggle auto format' })
+end, { desc = 'Toggle format on save' })
+map('n', '<leader>uw', function()
+   vim.o.wrap = not vim.o.wrap
+   vim.notify('Wrap: ' .. tostring(vim.o.wrap), vim.log.levels.INFO, { title = 'Wrap toggle' })
+end, { desc = 'Toggle word wrap' })
