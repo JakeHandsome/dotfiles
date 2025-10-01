@@ -31,6 +31,7 @@ return {
             { '<leader>t', group = '[T]oggle' },
             { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
             { '<leader>u', group = '[U]I' },
+            { '<leader>g', group = '[G]rug-far' },
          },
       },
    },
