@@ -18,12 +18,6 @@ map('n', 'N', 'Nzzzv', { desc = 'Move to the last search result while centering 
 map('n', '<C-I>', '<C-I>', { desc = 'Go to newer cursor position in jump list' })
 map('n', '<Tab>', '<Nop>')
 
--- Toggle between virtual text and lines
-map('n', '<leader>ue', function()
-   local lines = not vim.diagnostic.config().virtual_lines
-   local text = not vim.diagnostic.config().virtual_text
-   vim.diagnostic.config({ virtual_lines = lines, virtual_text = text })
-end, { desc = 'Toggle multiline diagnostics' })
 --
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
@@ -78,11 +72,32 @@ map('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split Window Right', remap = true })
 map('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
 
+---@param x boolean
+---@return string
+local function bool_to_on_off(x) return x and 'On' or 'Off' end
+
 map('n', '<leader>uf', function()
    vim.g.autoformat = not vim.g.autoformat
-   vim.notify('Auto format: ' .. tostring(vim.g.autoformat), vim.log.levels.INFO, { title = 'Format toggle' })
+   vim.notify('Auto format: ' .. bool_to_on_off(vim.g.autoformat), vim.log.levels.INFO, { title = 'Format toggle' })
 end, { desc = 'Toggle format on save' })
 map('n', '<leader>uw', function()
    vim.o.wrap = not vim.o.wrap
-   vim.notify('Wrap: ' .. tostring(vim.o.wrap), vim.log.levels.INFO, { title = 'Wrap toggle' })
+   vim.notify('Wrap: ' .. bool_to_on_off(vim.o.wrap), vim.log.levels.INFO, { title = 'Wrap toggle' })
 end, { desc = 'Toggle word wrap' })
+map('n', '<leader>ud', function()
+   local diag = not vim.diagnostic.is_enabled()
+   vim.diagnostic.enable(diag)
+   vim.notify('Wrap: ' .. bool_to_on_off(diag), vim.log.levels.INFO, { title = 'Diagnostics toggle' })
+end, { desc = 'Toggle Diagnostics' })
+
+-- Toggle between virtual text and lines
+map('n', '<leader>ue', function()
+   local lines = not vim.diagnostic.config().virtual_lines
+   local text = not vim.diagnostic.config().virtual_text
+   vim.diagnostic.config({ virtual_lines = lines, virtual_text = text })
+   if lines then
+      vim.notify('Diagnostics: Multi line', vim.log.levels.INFO, { title = 'Diagnostics type' })
+   else
+      vim.notify('Diagnostics: Single line', vim.log.levels.INFO, { title = 'Diagnostics type' })
+   end
+end, { desc = 'Toggle diagnostics type' })
