@@ -57,8 +57,8 @@ config.keys = {
    { key = "i", mods = "CTRL", action = wezterm.action({ SendKey = { key = "i", mods = "CTRL" } }) },
    { key = "-", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
    {
-      key = "\\",
-      mods = "LEADER",
+      key = "|",
+      mods = "LEADER|SHIFT",
       action = wezterm.action({ SplitHorizontal = { domain = "CurrentPaneDomain" } }),
    },
    { key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
