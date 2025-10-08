@@ -80,6 +80,16 @@ map('n', '<leader>uf', function()
    vim.g.autoformat = not vim.g.autoformat
    vim.notify('Auto format: ' .. bool_to_on_off(vim.g.autoformat), vim.log.levels.INFO, { title = 'Format toggle' })
 end, { desc = 'Toggle format on save' })
+
+map('n', '<leader>um', function()
+   vim.g.format_modifications_only = not vim.g.format_modifications_only
+   vim.notify(
+      'Format modifications only: ' .. bool_to_on_off(vim.g.format_modifications_only),
+      vim.log.levels.INFO,
+      { title = 'Format toggle' }
+   )
+end, { desc = 'Toggle format on save' })
+
 map('n', '<leader>uw', function()
    vim.o.wrap = not vim.o.wrap
    vim.notify('Wrap: ' .. bool_to_on_off(vim.o.wrap), vim.log.levels.INFO, { title = 'Wrap toggle' })

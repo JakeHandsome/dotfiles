@@ -3,6 +3,7 @@ return {
    event = 'VeryLazy',
    opts = {
       stages = 'slide',
+      level = vim.log.levels.DEBUG,
    },
    config = function(_, opts)
       require('notify').setup(opts)
