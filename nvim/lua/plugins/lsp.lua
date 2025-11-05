@@ -7,6 +7,7 @@ return {
          { 'WhoIsSethDaniel/mason-tool-installer.nvim', enabled = not vim.g.NixOs },
          { 'j-hui/fidget.nvim', opts = {} },
          'saghen/blink.cmp',
+         'b0o/schemastore.nvim',
       },
 
       config = function()
@@ -213,18 +214,20 @@ return {
             jsonls = {
                settings = {
                   json = {
-                     --schemas = require('schemastore').json.schemas {
-                     --  extra = {
-                     --    {
-                     --      name = 'ControllerAbstractionSchema.json',
-                     --      description = 'CA2 json schemas',
-                     --      fileMatch = { '*.sysarch' },
-                     --      url = 'file:'
-                     --        .. vim.fn.getcwd()
-                     --        .. '/node_modules/@deere-embedded/isg-embedded-tools.code-generation/Publish/ControllerAbstraction2.0/Schema/ControllerAbstractionSchema.json',
-                     --    },
-                     --  },
-                     --},
+                     format = { enable = true },
+                     validate = { enable = true },
+                     schemas = require('schemastore').json.schemas({
+                        extra = {
+                           {
+                              name = 'ControllerAbstractionSchema.json',
+                              description = 'CA2 json schemas',
+                              fileMatch = { '*.sysarch' },
+                              url = 'file:'
+                                 .. vim.fn.getcwd()
+                                 .. '/node_modules/@deere-embedded/isg-embedded-tools.code-generation/Publish/ControllerAbstraction2.0/Schema/ControllerAbstractionSchema.json',
+                           },
+                        },
+                     }),
                   },
                },
             },
@@ -315,26 +318,11 @@ return {
 
          if not vim.g.NixOs then
             require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
-            require('mason-lspconfig').setup({
-               ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-               automatic_installation = false,
-               handlers = {
-                  function(server_name)
-                     local server = servers[server_name] or {}
-                     -- This handles overriding only values explicitly passed
-                     -- by the server configuration above. Useful when disabling
-                     -- certain features of an LSP (for example, turning off formatting for ts_ls)
-                     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                     require('lspconfig')[server_name].setup(server)
-                  end,
-               },
-            })
-         else
-            -- Native neovim register server
-            for lsp, config in pairs(servers) do
-               vim.lsp.config[lsp] = config
-               vim.lsp.enable(lsp)
-            end
+         end
+         -- Native neovim register server
+         for lsp, config in pairs(servers) do
+            vim.lsp.config[lsp] = config
+            vim.lsp.enable(lsp)
          end
       end,
    },
