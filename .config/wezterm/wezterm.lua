@@ -49,6 +49,7 @@ local config = {
    -- Increase the launch size
    initial_rows = 40,
    initial_cols = 200,
+   enable_wayland = false,
 }
 config.keys = {
    -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
