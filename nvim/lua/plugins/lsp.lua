@@ -199,6 +199,7 @@ return {
          ---@alias lazyvim.lsp.Config vim.lsp.Config|{mason?:boolean, enabled?:boolean}
          ---@type table<string, lazyvim.lsp.Config|boolean>
          local servers = {
+            cssls = {},
             -- clangd = {},
             -- gopls = {},
             -- pyright = {},

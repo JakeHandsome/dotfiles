@@ -24,6 +24,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
    }
 end)
 
+-- TODO: Font name is the same on both systems now
 local font = "Iosevka"
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
    font = "Iosevka Nerd Font"
@@ -49,7 +50,7 @@ local config = {
    -- Increase the launch size
    initial_rows = 40,
    initial_cols = 200,
-   enable_wayland = false,
+   enable_wayland = true,
 }
 config.keys = {
    -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
