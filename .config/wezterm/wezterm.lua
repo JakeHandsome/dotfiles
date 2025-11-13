@@ -173,6 +173,8 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
    end
    table.insert(config.launch_menu, { label = "PowerShell", args = { "powershell.exe", "-NoLogo" } })
 else
+   -- opcaity on linux because hyprland makes it look pretty
+   config.window_background_opacity = 0.75
    table.insert(config.launch_menu, { label = "bash", args = { "bash", "-l" } })
    table.insert(config.launch_menu, { label = "fish", args = { "fish", "-l" } })
 end
