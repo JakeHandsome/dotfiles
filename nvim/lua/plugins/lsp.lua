@@ -8,6 +8,7 @@ return {
          { 'j-hui/fidget.nvim', opts = {} },
          'saghen/blink.cmp',
          'b0o/schemastore.nvim',
+         'mfussenegger/nvim-jdtls',
       },
 
       config = function()
@@ -172,6 +173,7 @@ return {
          local servers = {
             clangd = {},
             cssls = {},
+            jdtls = {},
             -- gopls = {},
             -- pyright = {},
             -- rust_analyzer = {},
