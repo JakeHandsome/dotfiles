@@ -2,8 +2,8 @@ rem Script to build lastest neovim for windows, the first argument is path to ne
 pushd %1
 rem git checkout ad3568a70167ceb870931650afb7dcaed88640ec
 git fetch
-rem git checkout release-0.11
-git checkout master
+git checkout release-0.11
+rem git checkout master
 git pull
 git clean -fxd
 cmake -S cmake.deps -B .deps -G Ninja -DCMAKE_BUILD_TYPE='Release'
