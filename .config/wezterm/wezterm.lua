@@ -24,6 +24,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
    }
 end)
 
+-- TODO: Font name is the same on both systems now
 local font = "Iosevka"
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
    font = "Iosevka Nerd Font"
@@ -38,7 +39,7 @@ local config = {
       brightness = 1.0,
    },
    front_end = "WebGpu",
-   font_size = 12.0,
+   font_size = 11.0,
    launch_menu = {},
    leader = { key = "a", mods = "CTRL" },
    disable_default_key_bindings = true,
@@ -49,6 +50,7 @@ local config = {
    -- Increase the launch size
    initial_rows = 40,
    initial_cols = 200,
+   enable_wayland = true,
 }
 config.keys = {
    -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
@@ -57,8 +59,8 @@ config.keys = {
    { key = "i", mods = "CTRL", action = wezterm.action({ SendKey = { key = "i", mods = "CTRL" } }) },
    { key = "-", mods = "LEADER", action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
    {
-      key = "\\",
-      mods = "LEADER",
+      key = "|",
+      mods = "LEADER|SHIFT",
       action = wezterm.action({ SplitHorizontal = { domain = "CurrentPaneDomain" } }),
    },
    { key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
@@ -90,6 +92,8 @@ config.keys = {
 
    { key = "n", mods = "SHIFT|CTRL", action = "ToggleFullScreen" },
    { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom("Clipboard") },
+   { key = "PageUp", mods = "SHIFT|CTRL", action = wezterm.action.MoveTabRelative(1) },
+   { key = "PageDown", mods = "SHIFT|CTRL", action = wezterm.action.MoveTabRelative(-1) },
    {
       key = "c",
       mods = "CTRL",
@@ -175,6 +179,8 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
    end
    table.insert(config.launch_menu, { label = "PowerShell", args = { "powershell.exe", "-NoLogo" } })
 else
+   -- opcaity on linux because hyprland makes it look pretty
+   config.window_background_opacity = 0.75
    table.insert(config.launch_menu, { label = "bash", args = { "bash", "-l" } })
    table.insert(config.launch_menu, { label = "fish", args = { "fish", "-l" } })
 end
