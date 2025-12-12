@@ -16,6 +16,7 @@ FOR /f "tokens=*" %%i IN ('fnm env --use-on-cd') DO CALL %%i
 doskey nvm=fnm $*
 where zoxide  > nul 2>&1 || echo "Installing zoxide" && cargo binstall -y zoxide
 
+doskey ls=lazygiy $*
 
 
 :: Shortcut for explorer
