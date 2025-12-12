@@ -174,6 +174,7 @@ return {
             clangd = {},
             cssls = {},
             jdtls = {},
+            pyright = {},
             -- gopls = {},
             -- pyright = {},
             -- rust_analyzer = {},
