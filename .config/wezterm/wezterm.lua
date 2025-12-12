@@ -73,12 +73,12 @@ config.keys = {
    { key = "J", mods = "LEADER|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Down", 5 } }) },
    { key = "K", mods = "LEADER|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Up", 5 } }) },
    { key = "L", mods = "LEADER|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Right", 5 } }) },
-    -- activate pane selection mode with numeric labels
-    {
-     key = '0',
-     mods = 'LEADER',
-     action = wezterm.action.PaneSelect,
-    },
+   -- activate pane selection mode with numeric labels
+   {
+      key = "0",
+      mods = "LEADER",
+      action = wezterm.action.PaneSelect,
+   },
    { key = "1", mods = "LEADER", action = wezterm.action({ ActivateTab = 0 }) },
    { key = "2", mods = "LEADER", action = wezterm.action({ ActivateTab = 1 }) },
    { key = "3", mods = "LEADER", action = wezterm.action({ ActivateTab = 2 }) },
@@ -144,6 +144,8 @@ config.keys = {
          flags = "FUZZY|WORKSPACES",
       }),
    },
+   -- CTRL-SHIFT-l activates the debug overlay
+   { key = "L", mods = "CTRL", action = wezterm.action.ShowDebugOverlay },
 }
 config.mouse_bindings = {
    {
@@ -152,6 +154,15 @@ config.mouse_bindings = {
       action = wezterm.action.PasteFrom("Clipboard"),
    },
 }
+
+-- Prefer descrete GPU over others
+for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
+   if gpu.backend == "Vulkan" and gpu.device_type == "DiscreteGpu" then
+      config.webgpu_preferred_adapter = gpu
+      config.front_end = "WebGpu"
+      break
+   end
+end
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
    config.term = "" -- Set to empty so FZF works on windows
