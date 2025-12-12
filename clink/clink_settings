@@ -72,6 +72,10 @@ color.git.star = bright green
 # type: color
 color.hidden = sgr 38;5;160
 
+# name: History expansion color
+# type: color
+color.histexpand = sgr 97;48;5;55
+
 # name: Horizontal scroll marker color
 # type: color
 color.horizscroll = sgr 38;5;16;48;5;30
@@ -119,6 +123,10 @@ color.yarn.module = bright green
 # name: Color for yarn run project.json script
 # type: color
 color.yarn.script = bright blue
+
+# name: Enable executable completions
+# type: boolean
+exec.enable = False
 
 # name: The number of history lines to save
 # type: integer
