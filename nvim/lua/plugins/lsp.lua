@@ -174,6 +174,7 @@ return {
             clangd = {},
             cssls = {},
             jdtls = {},
+            openscad_lsp = {},
             pyright = {},
             -- gopls = {},
             -- pyright = {},
@@ -306,5 +307,14 @@ return {
       opts = { autocmd = { enabled = true } },
       dependencies = 'antoinemadec/FixCursorHold.nvim',
       event = 'BufReadPre',
+   },
+   -- Language support for open scad
+   {
+      'salkin-mada/openscad.nvim',
+      config = function()
+         vim.g.openscad_load_snippets = true
+         require('openscad')
+      end,
+      dependencies = { 'L3MON4D3/LuaSnip', 'junegunn/fzf.vim' },
    },
 }
