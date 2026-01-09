@@ -316,6 +316,7 @@ return {
          vim.g.openscad_load_snippets = true
          require('openscad')
       end,
+      enabled = vim.fn.executable('openscad') == 1,
       dependencies = { 'L3MON4D3/LuaSnip', 'junegunn/fzf.vim' },
    },
 }
