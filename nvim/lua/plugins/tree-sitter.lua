@@ -64,7 +64,6 @@ return {
                'jsdoc',
                'json',
                'json5',
-               'jsonc',
                'xml',
                'yaml',
                'regex',
@@ -104,6 +103,9 @@ return {
          'snacks_dashboard',
          'snacks_notif',
          'snacks_win',
+         'NvimTree',
+         'notify',
+         'blink-cmp-menu',
       }
 
       -- Auto-install parsers and enable highlighting on FileType
