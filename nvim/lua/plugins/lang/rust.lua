@@ -28,8 +28,6 @@ return {
                         enable = true,
                      },
                   },
-                  -- Add clippy lints for Rust if using rust-analyzer
-                  checkOnSave = true,
                   -- Enable diagnostics if using rust-analyzer
                   diagnostics = {
                      enable = true,
