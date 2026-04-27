@@ -82,12 +82,6 @@ vim.api.nvim_create_autocmd('FileType', {
    command = 'wincmd L',
 })
 
--- no auto continue comment on new line
-vim.api.nvim_create_autocmd('FileType', {
-   group = vim.api.nvim_create_augroup('no_auto_comment', {}),
-   callback = function() vim.opt_local.formatoptions:remove({ 'c', 'r', 'o' }) end,
-})
-
 -- show cursorline only in active window enable
 vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, {
    group = vim.api.nvim_create_augroup('active_cursorline', { clear = true }),
@@ -99,4 +93,3 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave' }, {
    group = 'active_cursorline',
    callback = function() vim.opt_local.cursorline = false end,
 })
-
