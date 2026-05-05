@@ -22,4 +22,6 @@ doskey lg=lazygit $*
 :: Shortcut for explorer
 doskey ex=explorer $*
 
+set FZF_CTRL_T_OPTS=--preview-window "right:40%,border-left" --bind "ctrl-/:change-preview-window(right:70%|hidden|)" --preview "bat --force-colorization --style=numbers,changes --line-range=:500 -- {}"
+
 if %USERNAME%==jh49249 (curl -u %USERNAME%:%GITHUB_AT% -X PATCH https://github.deere.com/api/v3/user -d "{\"name\":\"Jake Hansen\"}" -H "Accept: application/vnd.github.v3+json" | json name) else (echo "not working")

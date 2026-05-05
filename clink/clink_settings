@@ -2,6 +2,10 @@
 # type: boolean
 autosuggest.enable = True
 
+# name: Show a suggestion in a muted color
+# type: boolean
+autosuggest.inline = True
+
 # name: Selects default key bindings
 # type: enum
 # options: bash,windows
@@ -127,6 +131,14 @@ color.yarn.script = bright blue
 # name: Enable executable completions
 # type: boolean
 exec.enable = False
+
+# name: Use default key bindings
+# type: boolean
+fzf.default_bindings = True
+
+# name: Location of fzf.exe if not on the PATH
+# type: string
+fzf.exe_location = C:\Users\jh49249\AppData\Local\Microsoft\WinGet\Links\fzf.exe
 
 # name: The number of history lines to save
 # type: integer
