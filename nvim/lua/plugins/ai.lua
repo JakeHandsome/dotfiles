@@ -56,6 +56,7 @@ return {
       end,
    },
    {
+<<<<<<< Updated upstream
       'pablopunk/pi.nvim',
       config = function()
          -- Neovim exposes libuv under `vim.uv` in newer versions.
@@ -102,5 +103,43 @@ return {
          -- Ask pi with visual selection as context
          vim.keymap.set('v', '<leader>op', ':PiAskSelection<CR>', { desc = 'Ask pi (selection)' })
       end,
+=======
+      -- Load from disk if possible
+      dir = vim.fn.isdirectory(vim.fn.expand('~/projects/pi-nvim-bridge')) == 1 and '~/projects/pi-nvim-bridge' or nil,
+      -- Fallback to git
+      url = 'https://codeberg.org/JakeHandsome/pi-nvim-bridge',
+      keys = {
+         {
+            '<leader>op',
+            function() require('pi-nvim-bridge').prefill_with_file() end,
+            mode = 'n',
+            desc = 'Paste prompt into pi editor with file',
+         },
+         {
+            '<leader>op',
+            function() require('pi-nvim-bridge').prefill_with_selection() end,
+            mode = 'x',
+            desc = 'Paste prompt into pi editor with selection',
+         },
+         {
+            '<leader>os',
+            function() require('pi-nvim-bridge').send_with_file() end,
+            mode = 'n',
+            desc = 'Send prompt to pi with file',
+         },
+         {
+            '<leader>os',
+            function() require('pi-nvim-bridge').send_with_selection() end,
+            mode = 'x',
+            desc = 'Send prompt to pi with selection',
+         },
+         {
+            '<leader>oS',
+            function() require('pi-nvim-bridge').select_session() end,
+            mode = { 'n', 'x' },
+            desc = 'Select pi session',
+         },
+      },
+>>>>>>> Stashed changes
    },
 }
