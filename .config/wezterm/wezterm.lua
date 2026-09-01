@@ -39,6 +39,17 @@ local config = {
       brightness = 1.0,
    },
    front_end = "WebGpu",
+   -- Post-process cursor shaders (Ghostty convention; cross-compiled to WGSL
+   -- at runtime by the wezterm-shaders fork, see flake.nix).
+   -- ripple_cursor is not enabled: the fork's cursor uniforms carry no cursor
+   -- shape, so its width-change trigger can never fire (wezterm/wezterm#8076).
+   custom_shaders = {
+      { format = "Ghostty", path = "shaders/cursor_warp.glsl" },
+   },
+   -- The post-process cursor uniforms are only updated on the legacy render
+   -- path in wezterm PR #8076; keep the box-model renderer off until that
+   -- is fixed upstream, or the cursor shaders will stop animating.
+   use_box_model_render = false,
    font_size = 11.0,
    launch_menu = {},
    leader = { key = "a", mods = "CTRL" },
