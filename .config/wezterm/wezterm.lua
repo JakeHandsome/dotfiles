@@ -176,7 +176,6 @@ for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
 end
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-   config.term = "" -- Set to empty so FZF works on windows
    config.default_prog = {
       "cmd.exe",
       "/k",
