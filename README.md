@@ -25,6 +25,13 @@ This repo is config files for some programs I use, below is some notes on setup 
     - Clink integration
     - [Link](clink/zoxide.lua)
 
+## gwt (git worktree workflow)
+  - Bare-repo worktree workflow: `git clone --bare`, worktrees as siblings, one command to create+cd, one name to get back
+  - Settings
+    - Clink integration (Windows)
+    - fish function via home-manager (Linux, in the nix-config flake at `parts/gwt.nix`)
+    - [Instructions](clink/gwt.md)
+
 ## uutils/coreutils https://github.com/uutils/coreutils
   - Rewrite of GNU coreutils in rust, works for windows. Use the same commands on linux and windows
   - Settings
