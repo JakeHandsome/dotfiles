@@ -64,6 +64,8 @@ clink-injected cmd windows.
 - `gwt rm` passes through git's guard: a dirty worktree is refused unless
   you add git's own `--force` (the script does not forward extra flags;
   say so in an issue to your own dotfiles if you need it).
+- Do not `gwt rm` the worktree you are standing in: the removal succeeds
+  and you are left in a deleted directory. `cd` out first.
 
 ### Optional: Tab completion
 
