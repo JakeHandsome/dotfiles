@@ -12,7 +12,10 @@ gwt                list worktrees
 gwt new <branch>   create <parent-of-bare-repo>/<branch>, then cd into it
                    (the branch is created from HEAD if it does not exist)
 gwt <branch|path>  cd into a worktree (branch name, full path, or path leaf)
-gwt rm <branch>    remove a worktree
+gwt rm [--force] <branch>
+                   remove a worktree (--force, at any position after rm,
+                   is passed through to git worktree remove, bypassing
+                   its dirty-tree and submodule guards)
 ```
 
 Examples, with `~/dev/repo.git` as the bare clone:
@@ -61,9 +64,11 @@ clink-injected cmd windows.
 - There is no interactive picker here. The filter runs commands through
   `io.popen`, which has no TTY, and interactive pickers need one. clink's
   own Ctrl+Space list can stand in for one if you add a match generator.
-- `gwt rm` passes through git's guard: a dirty worktree is refused unless
-  you add git's own `--force` (the script does not forward extra flags;
-  say so in an issue to your own dotfiles if you need it).
+- `gwt rm` surfaces git's guards as-is: a dirty worktree, a worktree with
+  initialized submodules, or a locked worktree is refused. `--force` after
+  `rm` (any position) bypasses them, same as the fish half — note
+  `--force` on a dirty worktree discards uncommitted work without a
+  prompt.
 - Do not `gwt rm` the worktree you are standing in: the removal succeeds
   and you are left in a deleted directory. `cd` out first.
 

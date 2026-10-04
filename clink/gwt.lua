@@ -6,7 +6,8 @@
 --   gwt              list worktrees
 --   gwt new <branch> create <parent-of-bare-repo>/<branch> and cd into it
 --   gwt <branch|path> cd into a worktree (branch name, full path, or path leaf)
---   gwt rm <branch>  remove a worktree
+--   gwt rm [--force] <branch> remove a worktree (--force is passed
+--                              through to git worktree remove)
 --
 -- How it works: clink's onfilterinput hook intercepts lines starting with gwt
 -- before cmd.exe runs them. The function below calls plain git through
@@ -26,8 +27,15 @@ local function firstline(s)
   return (s:match('^([^\r\n]+)'))
 end
 
+-- convert to the path separator the target shell expects: clink's line
+-- rewrites run through cmd.exe, which wants backslashes; on any Unix
+-- shell the native slash already works (this is also what keeps the
+-- script testable off Windows)
 local function backslashes(p)
-  return (p or ''):gsub('/', '\\')
+  if package.config:sub(1, 1) == '\\' then
+    return (p or ''):gsub('/', '\\')
+  end
+  return p
 end
 
 -- dir containing the common git dir, i.e. where the bare repo lives
@@ -89,13 +97,29 @@ local function on_gwt(text)
     return 'call', false
   end
 
-  if args[2] == 'rm' and args[3] then
-    local p = find_worktree(args[3])
+  if args[2] == 'rm' then
+    -- --force is accepted at any position after rm and passed through to
+    -- git worktree remove (bypassing its dirty-tree and submodule
+    -- guards); the one remaining arg is the worktree to remove. Extra
+    -- non-flag args are ignored (first wins), same as the fish half.
+    local force, branch
+    for i = 3, #args do
+      if args[i] == '--force' then
+        force = true
+      elseif not branch then
+        branch = args[i]
+      end
+    end
+    if not branch then
+      io.write('gwt: usage: gwt rm [--force] <branch>\n')
+      return 'call', false
+    end
+    local p = find_worktree(branch)
     if p then
-      local out = run('git worktree remove "' .. backslashes(p) .. '"')
+      local out = run('git worktree remove' .. (force and ' --force' or '') .. ' "' .. backslashes(p) .. '"')
       io.write(out)
     else
-      io.write('gwt: no worktree matching ' .. args[3] .. '\n')
+      io.write('gwt: no worktree matching ' .. branch .. '\n')
     end
     return 'call', false
   end
