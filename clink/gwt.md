@@ -8,7 +8,9 @@ one name gets you back.
 The same commands exist on both platforms, so the workflow is learned once:
 
 ```
-gwt                list worktrees
+gwt                pick a worktree and cd into it: fzf picker when fzf is
+                   on PATH, numbered list otherwise (Esc or an empty pick
+                   cancels without an error)
 gwt new <branch>   create <parent-of-bare-repo>/<branch>, then cd into it
                    (the branch is created from HEAD if it does not exist;
                    submodules are initialized, a failed init warns but
@@ -63,9 +65,18 @@ clink-injected cmd windows.
 - Git's own error output goes straight to the console (clink's `io.popen`
   only captures stdout), so a failed `gwt new` fails visibly and does not
   change directory.
-- There is no interactive picker here. The filter runs commands through
-  `io.popen`, which has no TTY, and interactive pickers need one. clink's
-  own Ctrl+Space list can stand in for one if you add a match generator.
+- Bare `gwt` opens a picker. When `fzf` is on PATH it runs
+  `fzf --height=40% --no-sort --with-nth=1` (the same flags and
+  branch<TAB>path input format as the fish picker; `--with-nth=1` keeps
+  the query on the branch column only); otherwise it falls back to a
+  numbered list and reads your number from the console (prompt:
+  `pick a worktree (number, empty to cancel)`). Esc, or Enter on a
+  zero-match selection, cancels: no directory change, no error. The
+  worktree list reaches fzf through a temp file in %TEMP% (clink's
+  `io.popen` hands the line to cmd.exe, which has no heredoc, and pipes
+  the child's stdin); it is removed after the pick. Piped stdout is no
+  obstacle: fzf's UI talks to the console directly (CONIN$/CONOUT$ on
+  Windows), so only the picked line travels back through the pipe.
 - `gwt rm` surfaces git's guards as-is: a dirty worktree, a worktree with
   initialized submodules, or a locked worktree is refused. `--force` after
   `rm` (any position) bypasses them, same as the fish half — note

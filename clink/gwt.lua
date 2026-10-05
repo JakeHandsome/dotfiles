@@ -3,7 +3,8 @@
 --
 -- Companion to the fish function in the nix-config repo (parts/gwt.nix).
 -- Same commands on both platforms:
---   gwt              list worktrees
+--   gwt              pick a worktree to cd into: fzf picker when fzf is on
+--                    PATH, numbered list otherwise (Esc / empty pick cancels)
 --   gwt new <branch> create <parent-of-bare-repo>/<branch> and cd into it
 --   gwt <branch|path> cd into a worktree (branch name, full path, or path leaf)
 --   gwt rm [--force] <branch> remove a worktree (--force is passed
@@ -14,6 +15,18 @@
 -- io.popen, then returns a replacement command line. For the cd verbs that
 -- line is `cd /d "..."`, which cmd.exe executes in the current process, so
 -- the directory change sticks. Everything else falls through to a no-op.
+--
+-- Picker notes: the fzf picker runs
+--   fzf --height=40% --no-sort --with-nth=1 < <tempfile>
+-- with the worktree list written as branch<TAB>path lines (the same flags
+-- and input format as the fish picker; --with-nth=1 keeps the query on the
+-- branch column only). The list goes in via a temp file in %TEMP% because
+-- clink's io.popen hands the line to cmd.exe (no heredoc) and pipes fzf's
+-- stdin. fzf still works despite the piped stdout: its UI talks to the
+-- console directly (CONIN$/CONOUT$ on Windows, /dev/tty on Unix), so only
+-- the picked line travels back through the pipe. When fzf is not on PATH
+-- the command degrades to a numbered list and a blocking stdin read
+-- (clink's Lua runtime reads stdin line by line).
 -- =============================================================================
 
 local function run(cmd)
@@ -27,41 +40,150 @@ local function firstline(s)
   return (s:match('^([^\r\n]+)'))
 end
 
+-- clink runs on cmd.exe; the POSIX branch exists for the Lua-based tests
+local is_windows = package.config:sub(1, 1) == '\\'
+
 -- convert to the path separator the target shell expects: clink's line
 -- rewrites run through cmd.exe, which wants backslashes; on any Unix
 -- shell the native slash already works (this is also what keeps the
 -- script testable off Windows)
 local function backslashes(p)
-  if package.config:sub(1, 1) == '\\' then
+  if is_windows then
     return (p or ''):gsub('/', '\\')
   end
   return p
 end
 
--- dir containing the common git dir, i.e. where the bare repo lives
+-- dir containing the common git dir, i.e. where the bare repo lives; nil
+-- outside a git repo (git's own fatal is suppressed, same as the fish half)
 local function repo_parent()
-  local out = run('git rev-parse --path-format=absolute --git-common-dir')
+  local quiet = is_windows and ' 2>nul' or ' 2>/dev/null'
+  local out = run('git rev-parse --path-format=absolute --git-common-dir' .. quiet)
   local d = firstline(out)
   if not d then return nil end
   return d:match('^(.*)[/\\][^/\\]+$')
 end
 
--- match by branch name, full path, or path leaf
-local function find_worktree(target)
-  local cur
-  local pat = target:gsub('%%', '%%%%')
+-- the line cmd.exe needs to change directory in the current process
+local function cd_line(path)
+  return 'cd /d "' .. backslashes(path) .. '"', false
+end
+
+-- all worktrees as {branch=..., path=...}, in `git worktree list
+-- --porcelain` order (branch is nil for a detached HEAD)
+local function worktrees()
+  local wts, cur = {}, nil
   local out = run('git worktree list --porcelain')
   for line in out:gmatch('[^\r\n]+') do
     if line:sub(1, 9) == 'worktree ' then
-      cur = line:sub(10)
-    elseif line:sub(1, 7) == 'branch ' and cur then
-      local b = line:match('^branch refs/heads/(.+)$')
-      if b == target or cur == target or cur:match('[/\\]' .. pat .. '$') then
-        return cur
-      end
+      cur = { branch = nil, path = line:sub(10) }
+      wts[#wts + 1] = cur
+    elseif line:sub(1, 7) == 'branch ' and cur and not cur.branch then
+      cur.branch = line:match('^branch refs/heads/(.+)$')
+    end
+  end
+  return wts
+end
+
+-- the pickable worktrees: those with a branch name (detached HEADs stay
+-- reachable via `gwt <path>`)
+local function branch_worktrees(wts)
+  local out = {}
+  for _, wt in ipairs(wts) do
+    if wt.branch then out[#out + 1] = wt end
+  end
+  return out
+end
+
+-- match by branch name, full path, or path leaf
+local function find_worktree(target)
+  local pat = target:gsub('%%', '%%%%')
+  for _, wt in ipairs(worktrees()) do
+    if wt.branch == target or wt.path == target or wt.path:match('[/\\]' .. pat .. '$') then
+      return wt.path
     end
   end
   return nil
+end
+
+-- path to fzf on PATH, or nil
+local function fzf_path()
+  local probe = is_windows and 'where fzf 2>nul' or 'command -v fzf'
+  local p = firstline(run(probe))
+  if p and p ~= '' then
+    return p
+  end
+  return nil
+end
+
+-- a scratch file for the picker input, in a place git will never notice:
+-- %TEMP% on Windows, $TMPDIR elsewhere (never inside a worktree); the name
+-- carries time + a clock fraction so back-to-back picks never collide
+local function picker_tmpfile()
+  local d, sep
+  if is_windows then
+    d, sep = os.getenv('TEMP') or os.getenv('TMP') or '.', '\\'
+  else
+    d, sep = os.getenv('TMPDIR') or '/tmp', '/'
+  end
+  return d .. sep .. 'gwt-pick-' .. os.time()
+    .. '-' .. string.format('%d', (os.clock() % 1) * 1000000) .. '.tmp'
+end
+
+-- run fzf over the worktree list; returns the picked worktree's path, or
+-- nil when the user cancels (Esc, or Enter on an empty / zero-match
+-- selection) or fzf fails to start.
+local function fzf_pick(fzf, names)
+  local lines = {}
+  for i, wt in ipairs(names) do
+    lines[i] = wt.branch .. '\t' .. wt.path
+  end
+  local tmp = picker_tmpfile()
+  local f = io.open(tmp, 'w')
+  if not f then
+    return nil
+  end
+  f:write(table.concat(lines, '\n') .. '\n')
+  f:close()
+  local out = run('"' .. fzf .. '" --height=40% --no-sort --with-nth=1 < "' .. tmp .. '"')
+  os.remove(tmp)
+  local sel = firstline(out)
+  if not sel then
+    return nil
+  end
+  -- the picked line is the original input line (branch<TAB>path): take
+  -- everything after the first tab; if it ever comes back without a tab
+  -- (just the branch), resolve it against the list we fed fzf
+  local path = sel:match('^[^\t]*\t(.*)$')
+  if not path then
+    for _, wt in ipairs(names) do
+      if wt.branch == sel then
+        path = wt.path
+        break
+      end
+    end
+  end
+  return path
+end
+
+-- the fallback picker: a numbered list and a plain line read, mirroring
+-- the fish picker's numbered fallback (same prompt, same empty-to-cancel
+-- and invalid-number behavior).
+local function numbered_pick(names)
+  for i, wt in ipairs(names) do
+    io.write(('  %d. %s\n'):format(i, wt.branch))
+  end
+  io.write('pick a worktree (number, empty to cancel): ')
+  local pick = (io.read('*l') or ''):gsub('\r$', '')
+  if pick == '' then
+    return nil
+  end
+  local k = tonumber(pick:match('^[1-9][0-9]*$') or '')
+  if not k or k > #names then
+    io.write('gwt: no such choice\n')
+    return nil
+  end
+  return names[k].path
 end
 
 local function on_gwt(text)
@@ -69,8 +191,27 @@ local function on_gwt(text)
   for w in text:gmatch('%S+') do args[#args + 1] = w end
 
   if #args == 1 then
-    local out = run('git worktree list')
-    io.write(out)
+    -- interactive picker: fzf when it is on PATH, numbered list otherwise
+    if not repo_parent() then
+      io.write('gwt: not inside a git repo\n')
+      return 'call', false
+    end
+    local names = branch_worktrees(worktrees())
+    if #names == 0 then
+      io.write('gwt: no worktrees\n')
+      return 'call', false
+    end
+    local fzf = fzf_path()
+    local path
+    if fzf then
+      path = fzf_pick(fzf, names)
+    else
+      path = numbered_pick(names)
+    end
+    if path then
+      return cd_line(path)
+    end
+    -- cancelled: leave the line for the no-op, print nothing
     return 'call', false
   end
 
@@ -99,7 +240,7 @@ local function on_gwt(text)
       if subcode ~= 0 then
         io.write('gwt: warning: submodule init failed in ' .. backslashes(path) .. '\n')
       end
-      return 'cd /d "' .. backslashes(path) .. '"', false
+      return cd_line(path)
     end
     return 'call', false
   end
@@ -133,7 +274,7 @@ local function on_gwt(text)
 
   local p = find_worktree(args[2])
   if p then
-    return 'cd /d "' .. backslashes(p) .. '"', false
+    return cd_line(p)
   end
   io.write('gwt: no worktree matching ' .. args[2] .. '\n')
   return 'call', false
