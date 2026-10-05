@@ -92,6 +92,13 @@ local function on_gwt(text)
     local out, code = run(add)
     io.write(out)
     if code == 0 then
+      -- check out any submodules in the new worktree; a failure (e.g.
+      -- offline) warns, but the cd still happens
+      local subout, subcode = run('git -C "' .. backslashes(path) .. '" submodule update --init')
+      io.write(subout)
+      if subcode ~= 0 then
+        io.write('gwt: warning: submodule init failed in ' .. backslashes(path) .. '\n')
+      end
       return 'cd /d "' .. backslashes(path) .. '"', false
     end
     return 'call', false

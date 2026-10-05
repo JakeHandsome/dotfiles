@@ -10,7 +10,9 @@ The same commands exist on both platforms, so the workflow is learned once:
 ```
 gwt                list worktrees
 gwt new <branch>   create <parent-of-bare-repo>/<branch>, then cd into it
-                   (the branch is created from HEAD if it does not exist)
+                   (the branch is created from HEAD if it does not exist;
+                   submodules are initialized, a failed init warns but
+                   the cd still happens)
 gwt <branch|path>  cd into a worktree (branch name, full path, or path leaf)
 gwt rm [--force] <branch>
                    remove a worktree (--force, at any position after rm,
