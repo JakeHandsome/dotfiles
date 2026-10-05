@@ -20,6 +20,7 @@ gwt rm [--force] <branch>
                    remove a worktree (--force, at any position after rm,
                    is passed through to git worktree remove, bypassing
                    its dirty-tree and submodule guards)
+gwt help           print usage (also gwt --help, gwt -h)
 ```
 
 Examples, with `~/dev/repo.git` as the bare clone:

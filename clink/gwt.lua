@@ -9,12 +9,14 @@
 --   gwt <branch|path> cd into a worktree (branch name, full path, or path leaf)
 --   gwt rm [--force] <branch> remove a worktree (--force is passed
 --                              through to git worktree remove)
+--   gwt help         print usage (also gwt --help, gwt -h)
 --
 -- How it works: clink's onfilterinput hook intercepts lines starting with gwt
 -- before cmd.exe runs them. The function below calls plain git through
 -- io.popen, then returns a replacement command line. For the cd verbs that
 -- line is `cd /d "..."`, which cmd.exe executes in the current process, so
--- the directory change sticks. Everything else falls through to a no-op.
+-- the directory change sticks. Every other line is replaced by a bare
+-- `call`, a cmd.exe no-op, so the gwt line itself is never executed.
 --
 -- Picker notes: the fzf picker runs
 --   fzf --height=40% --no-sort --with-nth=1 < <tempfile>
@@ -186,9 +188,39 @@ local function numbered_pick(names)
   return names[k].path
 end
 
+-- Usage text: the fish side's text (parts/gwt.nix) with only the
+-- platform-specific lines adapted: worktrees live beside the bare repo,
+-- not in ~/.worktrees/<repo>/<branch>, and bare gwt always runs a picker
+-- (the clink half has no non-interactive mode)
+local function help_text()
+  local lines = {
+    'gwt: bare-repo git worktree workflow',
+    '',
+    'worktrees live in <parent-of-bare-repo>/<branch>',
+    '',
+    'usage:',
+    '  gwt                pick a worktree to cd into (fzf picker, numbered list without fzf)',
+    '  gwt new <branch>   create <parent-of-bare-repo>/<branch> and cd into it',
+    '                       (creates the branch from HEAD if it does not exist;',
+    '                       initializes submodules -- a failed init warns but the cd still happens)',
+    '  gwt <branch|path>  cd into a worktree (branch name, full path, or path leaf)',
+    '  gwt rm <branch>    remove a worktree',
+    '                       (--force in any position after rm is passed through to git',
+    '                       worktree remove, bypassing its dirty-tree and submodule guards)',
+  }
+  return table.concat(lines, '\n') .. '\n'
+end
+
 local function on_gwt(text)
   local args = {}
   for w in text:gmatch('%S+') do args[#args + 1] = w end
+
+  -- help wins over every other verb, as on the fish side; the first
+  -- argument alone decides, so `gwt help extra` still prints usage
+  if args[2] == 'help' or args[2] == '--help' or args[2] == '-h' then
+    io.write(help_text())
+    return 'call', false
+  end
 
   if #args == 1 then
     -- interactive picker: fzf when it is on PATH, numbered list otherwise
