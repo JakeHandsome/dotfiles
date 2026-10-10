@@ -26,7 +26,7 @@ This repo is config files for some programs I use, below is some notes on setup 
     - [Link](clink/zoxide.lua)
 
 ## gwt (git worktree workflow)
-  - Bare-repo worktree workflow: `git clone --bare`, worktrees as siblings, one command to create+cd, one name to get back
+  - Bare-repo worktree workflow: `git clone --bare`, worktrees as siblings of the bare repo (clink) or under `~/.worktrees/<repo>/` (fish), one command to create+cd, one name to get back
   - Settings
     - Clink integration (Windows)
     - fish function via home-manager (Linux, in the nix-config flake at `parts/gwt.nix`)
