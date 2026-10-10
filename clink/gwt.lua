@@ -83,10 +83,12 @@ local function cd_line(path)
 end
 
 -- all worktrees as {branch=..., path=...}, in `git worktree list
--- --porcelain` order (branch is nil for a detached HEAD)
-local function worktrees()
+-- --porcelain` order (branch is nil for a detached HEAD); quiet
+-- suppresses git's own fatal (the completion path runs outside repos
+-- too; the hook path guards with repo_parent first)
+local function worktrees(quiet)
   local wts, cur = {}, nil
-  local out = run('git worktree list --porcelain')
+  local out = run('git worktree list --porcelain' .. (quiet and errdev or ''))
   for line in out:gmatch('[^\r\n]+') do
     if line:sub(1, 9) == 'worktree ' then
       cur = { branch = nil, path = line:sub(10) }
@@ -349,8 +351,8 @@ end
 -- worktree branch names (the cd form and the 'rm' form)
 local function worktree_branch_names()
   local out = {}
-  for _, wt in ipairs(worktrees()) do
-    if wt.branch then out[#out + 1] = wt.branch end
+  for _, wt in ipairs(branch_worktrees(worktrees(true))) do
+    out[#out + 1] = wt.branch
   end
   return out
 end
@@ -374,21 +376,17 @@ local function first_arg_matches(word)
   return worktree_branch_names()
 end
 
-local function new_arg_matches(word)
-  return local_branch_names()
-end
-
 -- 'rm' position: the existing worktrees, plus --force (also registered as
 -- a flag below so '--f<Tab>' completes to it; the hook consumes it at any
 -- position after rm)
-local function rm_arg_matches(word)
+local function rm_arg_matches()
   local out = worktree_branch_names()
   out[#out + 1] = '--force'
   return out
 end
 
 local help_parser = clink.argmatcher():nofiles()
-local new_parser = clink.argmatcher():addarg(new_arg_matches):nofiles()
+local new_parser = clink.argmatcher():addarg(local_branch_names):nofiles()
 local rm_parser = clink.argmatcher()
   :addflags("--force")
   :addarg(rm_arg_matches)
