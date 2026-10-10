@@ -86,11 +86,15 @@ clink-injected cmd windows.
 - Do not `gwt rm` the worktree you are standing in: the removal succeeds
   and you are left in a deleted directory. `cd` out first.
 
-### Optional: Tab completion
+### Tab completion
 
-clink match generators can feed worktree branch names into completions;
-see the "Match generators" section of the clink docs
-(https://chrisant996.github.io/clink/clink.html). Not set up here.
+`gwt.lua` registers a clink argmatcher, so Tab (and Alt-= for the list)
+complete gwt's arguments: the subcommands (`new`, `rm`, `help`; `--help`
+and `-h` after typing `-`) after a bare `gwt`, local branch names after
+`gwt new`, worktree branch names plus `--force` after `gwt rm`, and
+worktree branch names for the bare-`gwt` cd form. Clink's filename
+fallback is disabled for gwt's arguments. The branch lists are generated
+by git at Tab time, so they are always current.
 
 ## Linux (fish, via home-manager)
 

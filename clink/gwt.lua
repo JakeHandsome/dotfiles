@@ -29,6 +29,14 @@
 -- the picked line travels back through the pipe. When fzf is not on PATH
 -- the command degrades to a numbered list and a blocking stdin read
 -- (clink's Lua runtime reads stdin line by line).
+--
+-- Completion: the file also registers a clink argmatcher, so Tab / Alt-=
+-- complete gwt's arguments: the subcommands (new / rm / help, plus
+-- --help / -h after a dash) after a bare gwt, local branch names after
+-- 'new', worktree branch names plus --force after 'rm', and worktree
+-- branch names for the cd form. The candidate functions run git at Tab
+-- time, so the branch lists are always current; :nofiles() at every level
+-- disables clink's filename fallback for gwt's arguments.
 -- =============================================================================
 
 local function run(cmd)
@@ -45,6 +53,10 @@ end
 -- clink runs on cmd.exe; the POSIX branch exists for the Lua-based tests
 local is_windows = package.config:sub(1, 1) == '\\'
 
+-- git's own fatal to the console; suppressed where gwt handles the
+-- missing-repo case itself (repo detection, completion)
+local errdev = is_windows and ' 2>nul' or ' 2>/dev/null'
+
 -- convert to the path separator the target shell expects: clink's line
 -- rewrites run through cmd.exe, which wants backslashes; on any Unix
 -- shell the native slash already works (this is also what keeps the
@@ -59,8 +71,7 @@ end
 -- dir containing the common git dir, i.e. where the bare repo lives; nil
 -- outside a git repo (git's own fatal is suppressed, same as the fish half)
 local function repo_parent()
-  local quiet = is_windows and ' 2>nul' or ' 2>/dev/null'
-  local out = run('git rev-parse --path-format=absolute --git-common-dir' .. quiet)
+  local out = run('git rev-parse --path-format=absolute --git-common-dir' .. errdev)
   local d = firstline(out)
   if not d then return nil end
   return d:match('^(.*)[/\\][^/\\]+$')
@@ -322,3 +333,73 @@ else
     if text:match('^%s*gwt%S*') then return on_gwt(text) end
   end)
 end
+
+-- =============================================================================
+-- Tab / Alt-= completion: a clink argmatcher for gwt
+--
+-- clink's parser-object argmatcher drives completion for 'gwt ...' lines:
+-- linked subparsers ("word"..parser) handle the subcommands, and the
+-- per-slot candidate functions run git at Tab time, so the branch lists
+-- are always current. Every parser is dead-ended with :nofiles(): without
+-- it, clink falls back to filename completion for words past the last
+-- argument slot, mixing local files into gwt's arguments (the same
+-- failure the fish half fixes with 'complete -c gwt -f').
+-- =============================================================================
+
+-- worktree branch names (the cd form and the 'rm' form)
+local function worktree_branch_names()
+  local out = {}
+  for _, wt in ipairs(worktrees()) do
+    if wt.branch then out[#out + 1] = wt.branch end
+  end
+  return out
+end
+
+-- all local branch names (the candidate source for 'gwt new': existing
+-- branches are checked out, missing ones are created)
+local function local_branch_names()
+  local out = {}
+  for line in run('git for-each-ref --format="%(refname:short)" refs/heads' .. errdev):gmatch('[^\r\n]+') do
+    out[#out + 1] = line
+  end
+  return out
+end
+
+-- first word after 'gwt': while the user has not typed anything, the
+-- candidates are the subcommands themselves -- offered by the parser as
+-- the linked words (new / rm / help) plus the --help / -h flags; once the
+-- user is typing, the word is a worktree to cd into
+local function first_arg_matches(word)
+  if word == '' then return {} end
+  return worktree_branch_names()
+end
+
+local function new_arg_matches(word)
+  return local_branch_names()
+end
+
+-- 'rm' position: the existing worktrees, plus --force (also registered as
+-- a flag below so '--f<Tab>' completes to it; the hook consumes it at any
+-- position after rm)
+local function rm_arg_matches(word)
+  local out = worktree_branch_names()
+  out[#out + 1] = '--force'
+  return out
+end
+
+local help_parser = clink.argmatcher():nofiles()
+local new_parser = clink.argmatcher():addarg(new_arg_matches):nofiles()
+local rm_parser = clink.argmatcher()
+  :addflags("--force")
+  :addarg(rm_arg_matches)
+  :nofiles()
+
+clink.argmatcher("gwt")
+  :addflags("--help", "-h")
+  :addarg({
+    "new" .. new_parser,
+    "rm" .. rm_parser,
+    "help" .. help_parser,
+    first_arg_matches,
+  })
+  :nofiles()
