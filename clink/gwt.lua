@@ -160,7 +160,12 @@ local function fzf_pick(fzf, names)
   end
   f:write(table.concat(lines, '\n') .. '\n')
   f:close()
-  local out = run('"' .. fzf .. '" --height=40% --no-sort --with-nth=1 < "' .. tmp .. '"')
+  local cmd = '"' .. fzf .. '" --height=40% --no-sort --with-nth=1 < "' .. tmp .. '"'
+  if is_windows then
+    -- CMD /c strips the outermost quotes; preserve the executable and input path quotes.
+    cmd = '"' .. cmd .. '"'
+  end
+  local out = run(cmd)
   os.remove(tmp)
   local sel = firstline(out)
   if not sel then
