@@ -5,33 +5,31 @@ layout: `git clone --bare` a repo, and do all the work in linked
 worktrees. One command creates a tree and lands you in it; one name
 gets you back.
 
-The same commands exist on both platforms, so the workflow is learned
-once. The halves differ in where new worktrees go (the fish half under
-`~/.worktrees/<repo>/`, the clink half as siblings of the bare repo)
-and in the details of bare `gwt` (below). Run `gwt` from the bare repo
+Both platforms create worktrees under `~/.worktrees/<repo>/<branch>`.
+On Windows, `~` is `%USERPROFILE%`, with `%HOME%` as a fallback. The repo
+name comes from the bare repo directory, or the main checkout for a
+non-bare repo, minus a trailing `.git`. Run `gwt` from the bare repo
 directory or from any worktree of that repo; both resolve to the same
-common git directory.
+common git directory and use the same repo name.
+
+Existing worktrees stay where they are. `gwt <branch|path>`, the picker,
+and `gwt rm` still find them through Git's worktree list.
 
 ## Usage
 
-`gwt help` (also `gwt --help`, `gwt -h`) prints the usage text. The two
-halves differ in exactly three lines — where worktrees live and the
-bare-`gwt` picker — and the block below renders those lines with two
-placeholders:
-
-- `<placement>`: `~/.worktrees/<repo>/<branch>` (fish),
-  `<parent-of-bare-repo>/<branch>` (clink)
-- `<picker>`: `plain list when non-interactive` (fish),
-  `fzf picker, numbered list without fzf` (clink)
+`gwt help` (also `gwt --help`, `gwt -h`) prints the usage text. The
+halves differ only in the bare-`gwt` picker description. In the block
+below, `<picker>` is `plain list when non-interactive` for fish and
+`fzf picker, numbered list without fzf` for clink.
 
 ```
 gwt: bare-repo git worktree workflow
 
-worktrees live in <placement>
+worktrees live in ~/.worktrees/<repo>/<branch>
 
 usage:
   gwt                pick a worktree to cd into (<picker>)
-  gwt new <branch>   create <placement> and cd into it
+  gwt new <branch>   create ~/.worktrees/<repo>/<branch> and cd into it
                        (creates the branch from HEAD if it does not exist;
                        initializes submodules -- a failed init warns but the cd still happens)
   gwt <branch|path>  cd into a worktree (branch name, full path, or path leaf)
@@ -67,9 +65,9 @@ worktrees`.
 
 ## gwt new <branch>
 
-Creates the worktree at `<placement>` and cds into it. An existing
-branch is checked out; a missing one is created from HEAD. Both halves
-then run `git submodule update --init` in the new worktree; a failure
+Creates the worktree at `~/.worktrees/<repo>/<branch>` and cds into it.
+An existing branch is checked out; a missing one is created from HEAD.
+Both halves then run `git submodule update --init` in the new worktree; a failure
 (e.g. offline) warns `gwt: warning: submodule init failed in <path>`,
 but the cd still happens. A failed `git worktree add` itself prints
 git's own error, and gwt does not cd.
@@ -101,15 +99,16 @@ Windows (clink half), with `C:\dev\repo.git` as the bare clone:
 
 ```
 C:\dev\repo.git> gwt new feature-x
-C:\dev\feature-x> gwt feature-x
-C:\dev\feature-x> gwt rm feature-x
+C:\Users\you\.worktrees\repo\feature-x> cd /d C:\dev\repo.git
+C:\dev\repo.git> gwt feature-x
+C:\Users\you\.worktrees\repo\feature-x> cd /d C:\dev\repo.git
+C:\dev\repo.git> gwt rm feature-x
 ```
 
-`gwt new feature-x` creates `C:\dev\feature-x` beside the bare repo
-and lands in it; `gwt feature-x` gets you back later; `gwt rm
-feature-x` removes it. The fish half runs the same three commands
-against `~/dev/repo.git` and creates `~/.worktrees/repo/feature-x`
-instead.
+With `%USERPROFILE%` set to `C:\Users\you`, `gwt new feature-x` creates
+`C:\Users\you\.worktrees\repo\feature-x` and lands in it. `gwt feature-x`
+gets you back later; `gwt rm feature-x` removes it. The fish half uses
+the same layout under `~/.worktrees/repo/feature-x`.
 
 ## Windows (this script)
 
@@ -135,8 +134,8 @@ Setup, once:
 3. `git` on PATH, 2.31 or newer for `--path-format=absolute` (any
    recent Git for Windows qualifies).
 
-No aliases, environment variables, or config files. `gwt` only exists
-in clink-injected cmd windows.
+No aliases or extra config files are needed. `gwt` only exists in
+clink-injected cmd windows.
 
 ### Notes and limits
 
@@ -197,9 +196,9 @@ needed for the picker.
   `parts/gwt.nix` of the nix-config flake, installed by home-manager;
   the clink half is `gwt.lua` in this directory, installed via the
   `%LOCALAPPDATA%\clink` junction.
-- Worktree placement: `~/.worktrees/<repo>/<branch>` on the fish
-  half, a sibling of the bare repo on the clink half. The commands
-  and the workflow are otherwise identical.
+- Worktree placement: `~/.worktrees/<repo>/<branch>` on both
+  platforms. Clink uses `%USERPROFILE%` for the home directory,
+  falling back to `%HOME%` if it is unset.
 
 ## Where this came from
 

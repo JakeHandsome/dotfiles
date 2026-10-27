@@ -5,7 +5,7 @@
 -- Same commands on both platforms:
 --   gwt              pick a worktree to cd into: fzf picker when fzf is on
 --                    PATH, numbered list otherwise (Esc / empty pick cancels)
---   gwt new <branch> create <parent-of-bare-repo>/<branch> and cd into it
+--   gwt new <branch> create ~/.worktrees/<repo>/<branch> and cd into it
 --   gwt <branch|path> cd into a worktree (branch name, full path, or path leaf)
 --   gwt rm [--force] <branch> remove a worktree (--force is passed
 --                              through to git worktree remove)
@@ -68,13 +68,14 @@ local function backslashes(p)
   return p
 end
 
--- dir containing the common git dir, i.e. where the bare repo lives; nil
--- outside a git repo (git's own fatal is suppressed, same as the fish half)
-local function repo_parent()
+-- The bare repo directory, or the main checkout for a non-bare repo.
+-- Resolving the common git dir keeps the name stable from linked worktrees.
+-- Outside a repo, return nil and suppress git's own fatal, as fish does.
+local function repo_dir()
   local out = run('git rev-parse --path-format=absolute --git-common-dir' .. errdev)
   local d = firstline(out)
   if not d then return nil end
-  return d:match('^(.*)[/\\][^/\\]+$')
+  return (d:gsub('[/\\]+$', ''):gsub('[/\\]%.git$', ''))
 end
 
 -- the line cmd.exe needs to change directory in the current process
@@ -85,7 +86,7 @@ end
 -- all worktrees as {branch=..., path=...}, in `git worktree list
 -- --porcelain` order (branch is nil for a detached HEAD); quiet
 -- suppresses git's own fatal (the completion path runs outside repos
--- too; the hook path guards with repo_parent first)
+-- too; the hook path guards with repo_dir first)
 local function worktrees(quiet)
   local wts, cur = {}, nil
   local out = run('git worktree list --porcelain' .. (quiet and errdev or ''))
@@ -206,19 +207,17 @@ local function numbered_pick(names)
   return names[k].path
 end
 
--- Usage text: the fish side's text (parts/gwt.nix) with only the
--- platform-specific lines adapted: worktrees live beside the bare repo,
--- not in ~/.worktrees/<repo>/<branch>, and bare gwt always runs a picker
--- (the clink half has no non-interactive mode)
+-- Usage text matches the fish side (parts/gwt.nix), except bare gwt
+-- always runs a picker here: the clink half has no non-interactive mode.
 local function help_text()
   local lines = {
     'gwt: bare-repo git worktree workflow',
     '',
-    'worktrees live in <parent-of-bare-repo>/<branch>',
+    'worktrees live in ~/.worktrees/<repo>/<branch>',
     '',
     'usage:',
     '  gwt                pick a worktree to cd into (fzf picker, numbered list without fzf)',
-    '  gwt new <branch>   create <parent-of-bare-repo>/<branch> and cd into it',
+    '  gwt new <branch>   create ~/.worktrees/<repo>/<branch> and cd into it',
     '                       (creates the branch from HEAD if it does not exist;',
     '                       initializes submodules -- a failed init warns but the cd still happens)',
     '  gwt <branch|path>  cd into a worktree (branch name, full path, or path leaf)',
@@ -242,7 +241,7 @@ local function on_gwt(text)
 
   if #args == 1 then
     -- interactive picker: fzf when it is on PATH, numbered list otherwise
-    if not repo_parent() then
+    if not repo_dir() then
       io.write('gwt: not inside a git repo\n')
       return 'call', false
     end
@@ -266,12 +265,20 @@ local function on_gwt(text)
   end
 
   if args[2] == 'new' and args[3] then
-    local parent = repo_parent()
-    if not parent then
+    local repo = repo_dir()
+    if not repo then
       io.write('gwt: not inside a git repo\n')
       return 'call', false
     end
-    local path = parent .. '/' .. args[3]
+    -- Use the Windows profile rather than a possibly MSYS-style HOME.
+    local home = os.getenv(is_windows and 'USERPROFILE' or 'HOME')
+    if not home and is_windows then home = os.getenv('HOME') end
+    if not home or home == '' then
+      io.write('gwt: cannot determine home directory\n')
+      return 'call', false
+    end
+    local name = repo:match('([^/\\]+)$'):gsub('%.git$', '')
+    local path = home:gsub('[/\\]+$', '') .. '/.worktrees/' .. name .. '/' .. args[3]
     -- checkout the branch if it exists, else create it from HEAD
     local _, refcode = run('git show-ref --verify --quiet refs/heads/' .. args[3])
     local add
